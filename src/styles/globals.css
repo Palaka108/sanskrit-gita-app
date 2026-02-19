@@ -1,0 +1,536 @@
+/* ============================================
+   Sanskrit Gita App — Global Styles
+   Version 0.1
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #2c2c2c;
+  background: #faf8f5;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ---- Buttons ---- */
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid #8b7355;
+  background: #fff;
+  color: #5a4a3a;
+  font-family: inherit;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn:hover {
+  background: #8b7355;
+  color: #fff;
+}
+
+.btn-primary {
+  background: #8b7355;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 0.8rem 2rem;
+}
+
+.btn-primary:hover {
+  background: #6e5a42;
+}
+
+.btn-correct {
+  border-color: #4a7c59;
+  color: #4a7c59;
+}
+
+.btn-correct:hover {
+  background: #4a7c59;
+  color: #fff;
+}
+
+.btn-incorrect {
+  border-color: #a05050;
+  color: #a05050;
+}
+
+.btn-incorrect:hover {
+  background: #a05050;
+  color: #fff;
+}
+
+/* ---- Home Page ---- */
+
+.home-page {
+  text-align: center;
+  padding-top: 6rem;
+}
+
+.home-page h1 {
+  font-size: 2.4rem;
+  color: #3b2f20;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  color: #7a6a58;
+  margin-bottom: 2.5rem;
+}
+
+/* ---- Verse Page ---- */
+
+.verse-page {
+  padding-top: 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  color: #8b7355;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem 0;
+  color: #7a6a58;
+}
+
+/* ---- Verse Viewer ---- */
+
+.verse-viewer {
+  margin-bottom: 2.5rem;
+}
+
+.verse-viewer h2 {
+  font-size: 1.3rem;
+  color: #3b2f20;
+  margin-bottom: 1rem;
+}
+
+.devanagari-block {
+  background: #f0ece6;
+  padding: 1.5rem;
+  border-radius: 6px;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.devanagari-block p {
+  font-size: 1.6rem;
+  line-height: 2.2;
+  color: #3b2f20;
+}
+
+.transliteration-block {
+  padding: 1rem 0;
+  font-size: 1.15rem;
+  line-height: 2;
+  text-align: center;
+}
+
+.word-clickable {
+  color: #8b7355;
+  cursor: pointer;
+  border-bottom: 1px dashed #8b7355;
+  transition: color 0.15s;
+}
+
+.word-clickable:hover {
+  color: #5a4a3a;
+}
+
+.word-plain {
+  color: #2c2c2c;
+}
+
+.line-break {
+  color: #bbb;
+}
+
+.translation-toggle {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #5a4a3a;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.translation-toggle:hover {
+  background: #f0ece6;
+}
+
+.translation-block {
+  background: #f7f5f0;
+  padding: 1.2rem;
+  border-radius: 6px;
+  border-left: 3px solid #8b7355;
+  margin-top: 0.5rem;
+}
+
+.translation-block p {
+  font-style: italic;
+  color: #4a4a4a;
+}
+
+/* ---- Grammar Modal ---- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 460px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+.modal-content h3 {
+  font-size: 1.4rem;
+  color: #3b2f20;
+  margin-bottom: 1rem;
+}
+
+.grammar-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.grammar-table td {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.grammar-label {
+  font-weight: bold;
+  color: #7a6a58;
+  width: 100px;
+}
+
+.grammar-note {
+  background: #f7f5f0;
+  padding: 0.8rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ---- Commentary Panel ---- */
+
+.commentary-panel {
+  margin-bottom: 2.5rem;
+}
+
+.commentary-panel h3 {
+  font-size: 1.2rem;
+  color: #3b2f20;
+  margin-bottom: 1rem;
+}
+
+.accordion-item {
+  border: 1px solid #e0dcd6;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border: none;
+  background: #f7f5f0;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #3b2f20;
+  cursor: pointer;
+  text-align: left;
+}
+
+.accordion-header.open {
+  background: #ece8e0;
+}
+
+.accordion-header:hover {
+  background: #ece8e0;
+}
+
+.accordion-arrow {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.accordion-body {
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.7;
+}
+
+.key-phrases {
+  margin-top: 0.8rem;
+}
+
+.key-phrases strong {
+  color: #7a6a58;
+  font-size: 0.85rem;
+}
+
+.key-phrases ul {
+  margin-top: 0.3rem;
+  padding-left: 1.2rem;
+}
+
+.key-phrases li {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 0.2rem;
+}
+
+/* ---- Chant Mode ---- */
+
+.chant-mode {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.chant-mode h3 {
+  font-size: 1.2rem;
+  color: #3b2f20;
+  margin-bottom: 1rem;
+}
+
+.chant-display {
+  background: #f0ece6;
+  padding: 1.5rem;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+}
+
+.chant-line {
+  font-size: 1.5rem;
+  line-height: 2;
+  color: #3b2f20;
+}
+
+.chant-transliteration {
+  font-size: 1rem;
+  color: #7a6a58;
+  font-style: italic;
+  margin-bottom: 0.8rem;
+}
+
+.chant-placeholder {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* ---- Flashcard ---- */
+
+.flashcard {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.flashcard h3 {
+  font-size: 1.2rem;
+  color: #3b2f20;
+  margin-bottom: 1rem;
+}
+
+.flashcard-card {
+  background: #fff;
+  border: 1px solid #e0dcd6;
+  border-radius: 8px;
+  padding: 2rem;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.flashcard-prompt {
+  font-size: 1.1rem;
+  color: #3b2f20;
+}
+
+.flashcard-answer {
+  font-size: 1rem;
+  color: #4a7c59;
+  font-style: italic;
+  padding: 0.6rem 1rem;
+  background: #f0f7f2;
+  border-radius: 4px;
+}
+
+.flashcard-actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.quiz-score {
+  font-size: 1.3rem;
+  color: #3b2f20;
+  margin-bottom: 1rem;
+}
+
+/* ---- Devanagari Trainer ---- */
+
+.devanagari-trainer {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.devanagari-trainer h3 {
+  font-size: 1.2rem;
+  color: #3b2f20;
+  margin-bottom: 0.5rem;
+}
+
+.trainer-counter {
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 1rem;
+}
+
+.trainer-card {
+  width: 140px;
+  height: 160px;
+  margin: 0 auto 0.5rem;
+  background: #fff;
+  border: 2px solid #e0dcd6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.trainer-card:hover {
+  border-color: #8b7355;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.trainer-card.flipped {
+  background: #f7f5f0;
+}
+
+.trainer-devanagari {
+  font-size: 3.5rem;
+  color: #3b2f20;
+}
+
+.trainer-transliteration {
+  font-size: 1.6rem;
+  color: #8b7355;
+  font-style: italic;
+}
+
+.trainer-hint {
+  font-size: 0.8rem;
+  color: #bbb;
+  margin-bottom: 0.8rem;
+}
+
+.trainer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.trainer-sound-placeholder {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1.2rem 1rem;
+  }
+
+  .home-page {
+    padding-top: 3rem;
+  }
+
+  .home-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .devanagari-block p {
+    font-size: 1.3rem;
+  }
+
+  .chant-line {
+    font-size: 1.2rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+}
