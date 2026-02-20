@@ -18,44 +18,38 @@ function verseLabel(verse: Verse): string {
 }
 
 /**
- * For BG 18.66, ensure the Devanagari always renders as FOUR lines:
- *   सर्वधर्मान्परित्यज्य
- *   मामेकं शरणं व्रज ।
- *   अहं त्वां सर्वपापेभ्यो
- *   मोक्षयिष्यामि मा शुचः ॥
+ * Split the ROMAN TRANSLITERATION into 4 lines.
+ * Uses newlines from DB first, then splits at logical pauses.
  *
- * For other verses, split on newlines from the DB.
- * If no newlines exist, split at logical pause points (।, ॥).
+ * For BG 18.66 this renders as:
+ *   sarva-dharman parityajya
+ *   mam ekam saranam vraja
+ *   aham tvam sarva-papebhyo
+ *   moksayisyami ma sucah
  */
-function splitDevanagari(text: string): string[] {
+function splitTransliterationIntoLines(text: string): string[] {
+  // If DB already has newlines, use them
   const lines = text.split('\n').map((l) => l.trim()).filter(Boolean)
   if (lines.length >= 2) return lines
 
-  const parts = text
-    .replace(/([।॥])\s*/g, '$1\n')
-    .split('\n')
-    .map((l) => l.trim())
-    .filter(Boolean)
+  // Fallback: split into roughly 4 lines by word count
+  const words = text.split(/\s+/).filter(Boolean)
+  if (words.length <= 4) return [text]
 
-  if (parts.length === 1 && parts[0].length > 20) {
-    const words = parts[0].split(/\s+/)
-    const mid = Math.ceil(words.length / 2)
-    return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')]
+  const perLine = Math.ceil(words.length / 4)
+  const result: string[] = []
+  for (let i = 0; i < words.length; i += perLine) {
+    result.push(words.slice(i, i + perLine).join(' '))
   }
-
-  return parts
+  return result
 }
 
 export default function VerseViewer({ verse, words, onWordClick }: VerseViewerProps) {
   const [showTranslation, setShowTranslation] = useState(false)
   const [layout, setLayout] = useState<'traditional' | 'learning'>('traditional')
 
-  const devanagariLines = splitDevanagari(verse.devanagari)
-
-  const transliterationWords = verse.transliteration
-    .replace(/\n/g, ' / ')
-    .split(/\s+/)
-    .filter(Boolean)
+  // Transliteration split into lines for 4-line display
+  const translitLines = splitTransliterationIntoLines(verse.transliteration)
 
   function findMatchingWord(token: string): Word | undefined {
     const clean = token.replace(/[/''".,;:!?()]/g, '').toLowerCase()
@@ -64,6 +58,28 @@ export default function VerseViewer({ verse, words, onWordClick }: VerseViewerPr
       const wLower = w.word.toLowerCase()
       return clean === wLower || clean.startsWith(wLower) || wLower.startsWith(clean)
     })
+  }
+
+  /** Render a single line of transliteration with clickable words */
+  function renderTranslitLine(line: string, lineIndex: number) {
+    const tokens = line.split(/\s+/).filter(Boolean)
+    return (
+      <div key={lineIndex} className="translit-line">
+        {tokens.map((token, i) => {
+          const match = findMatchingWord(token)
+          return (
+            <span
+              key={`${lineIndex}-${i}`}
+              className={match ? 'word-clickable' : 'word-plain'}
+              onClick={match ? () => onWordClick(match) : undefined}
+              title={match ? `Click for grammar: ${match.meaning}` : undefined}
+            >
+              {token}{' '}
+            </span>
+          )
+        })}
+      </div>
+    )
   }
 
   return (
@@ -96,31 +112,16 @@ export default function VerseViewer({ verse, words, onWordClick }: VerseViewerPr
         <div className="verse-card-inner">
           <LotusWatermark />
 
-          {/* Hero Sanskrit — always rendered as multiple lines */}
+          {/* Devanagari — rendered directly from DB, no forced splitting */}
           <div className={`devanagari-block ${layout === 'learning' ? 'learning-layout' : ''}`}>
-            {devanagariLines.map((line, i) => (
+            {verse.devanagari.split('\n').map((line, i) => (
               <p key={i}>{line}</p>
             ))}
           </div>
 
-          {/* Transliteration with clickable words */}
+          {/* Transliteration — always 4 lines with clickable words */}
           <div className="transliteration-block">
-            {transliterationWords.map((token, i) => {
-              if (token === '/') {
-                return <span key={i} className="line-break"> / </span>
-              }
-              const match = findMatchingWord(token)
-              return (
-                <span
-                  key={i}
-                  className={match ? 'word-clickable' : 'word-plain'}
-                  onClick={match ? () => onWordClick(match) : undefined}
-                  title={match ? `Click for grammar: ${match.meaning}` : undefined}
-                >
-                  {token}{' '}
-                </span>
-              )
-            })}
+            {translitLines.map((line, i) => renderTranslitLine(line, i))}
           </div>
         </div>
       </FiligreeBorder>
