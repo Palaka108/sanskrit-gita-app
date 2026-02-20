@@ -66,7 +66,6 @@ export default function VerseIndex() {
 
   return (
     <main className="verse-index-page">
-      <Link to="/" className="back-link">&larr; Home</Link>
       <h1>Verse Library</h1>
       <p className="index-subtitle">{verses.length} verses with grammar analysis</p>
 

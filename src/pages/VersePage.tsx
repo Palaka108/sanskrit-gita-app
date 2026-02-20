@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useParams, useSearchParams, Link } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import type { Verse } from '../types/verse'
 import type { Word } from '../types/grammar'
 import type { Commentary } from '../types/commentary'
 import VerseViewer from '../components/VerseViewer'
 import GrammarModal from '../components/GrammarModal'
-import ChantMode from '../components/ChantMode'
+import AudioButtons from '../components/AudioButtons'
 import GrammarIntroSection from '../components/GrammarIntroSection'
 import CommentaryPanel from '../components/CommentaryPanel'
 import Flashcard from '../components/Flashcard'
-import DevanagariTrainer from '../components/DevanagariTrainer'
 
 export default function VersePage() {
   const { chapter, verse: verseNum } = useParams<{ chapter: string; verse: string }>()
@@ -72,18 +71,17 @@ export default function VersePage() {
     return (
       <main className="verse-page">
         <p className="error">{error || 'Something went wrong.'}</p>
-        <Link to="/verses" className="btn">Browse Verses</Link>
       </main>
     )
   }
 
   return (
     <main className="verse-page">
-      <nav className="verse-nav">
-        <Link to="/verses" className="back-link">&larr; All Verses</Link>
-      </nav>
-
-      {/* 1. Hero Sanskrit (4-line cinematic) + 2. Transliteration + 3. Translation */}
+      {/*
+        NEW LAYOUT ORDER (Sections 1-8):
+        1. Roman Transliteration (4 lines) — inside VerseViewer
+        2. English Translation — inside VerseViewer (always visible)
+      */}
       <VerseViewer verse={verse} words={words} onWordClick={setSelectedWord} />
 
       {/* Grammar modal (overlay) */}
@@ -91,15 +89,13 @@ export default function VersePage() {
         <GrammarModal word={selectedWord} onClose={() => setSelectedWord(null)} />
       )}
 
-      {/* Ornament separator */}
-      <div className="ornament-separator">
-        <span className="ornament-symbol">&#x0970; &#x0970; &#x0970;</span>
-      </div>
+      {/* 3. Traditional Audio + 4. Gita Vibe Audio */}
+      <AudioButtons verseId={verse.id} />
 
-      {/* 4. Chant Mode */}
-      <ChantMode verse={verse} />
+      {/* 5. Sanskrit Devanagari — inside VerseViewer above */}
+      {/* 6. Word-by-word breakdown — inside VerseViewer above */}
 
-      {/* 5. Understanding Sanskrit Grammar */}
+      {/* 7. Grammar Focus section */}
       <GrammarIntroSection />
 
       {/* Ornament separator */}
@@ -107,16 +103,13 @@ export default function VersePage() {
         <span className="ornament-symbol">&#x0970; &#x0970; &#x0970;</span>
       </div>
 
-      {/* 6. Word-by-word breakdown is within VerseViewer (clickable transliteration) */}
-
-      {/* 7. Commentary section */}
+      {/* 8. Commentary section */}
       {commentaries.length > 0 && <CommentaryPanel commentaries={commentaries} />}
 
-      {/* 8. Flashcard quiz */}
+      {/* Flashcard quiz (bonus) */}
       {words.length > 0 && <Flashcard words={words} />}
 
-      {/* Devanagari Trainer */}
-      <DevanagariTrainer />
+      {/* DevanagariTrainer REMOVED from verse page — now lives on /dashboard */}
     </main>
   )
 }

@@ -1,39 +1,21 @@
 /* ============================================
    Sanskrit Gita App — Global Styles
-   Version 1.0 — Sacred Modern Redesign
-   Apple meets Ancient Manuscript meets Meditation
+   Version 2.0 — Cinematic Sacred Minimalism
+   Glassmorphism + Gold Accents + Breathing Light
    ============================================ */
 
 @import './filigree-border.css';
 
-/* ---- Animated Background Gradient ---- */
+/* ---- Keyframes ---- */
 
-@keyframes sacredGlow {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes lineReveal {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes softPulse {
@@ -47,14 +29,18 @@
 }
 
 @keyframes slideUpModal {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes breathingGlow {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.6; }
+}
+
+@keyframes audioWave {
+  0%, 100% { transform: scaleY(0.4); }
+  50%      { transform: scaleY(1); }
 }
 
 /* ---- Reset ---- */
@@ -71,21 +57,44 @@
 
 body {
   font-family: 'Inter', -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  color: #1A1A1A;
-  background: linear-gradient(135deg, #F5EFE6, #EDE5D8, #F5EFE6, #F0E8DA);
-  background-size: 400% 400%;
-  animation: sacredGlow 20s ease infinite;
+  color: #E8E0D4;
+  background: #0D0D12;
   line-height: 1.75;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Soft radial gradient glow from center */
+body::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(198, 167, 94, 0.08) 0%, rgba(31, 42, 68, 0.04) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: breathingGlow 8s ease-in-out infinite;
+}
+
+#root {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* ---- Typography ---- */
 
 h1, h2, h3 {
   font-family: 'Noto Serif Devanagari', Georgia, 'Palatino Linotype', serif;
-  color: #1F2A44;
+  color: #F0E6D0;
   letter-spacing: 0.01em;
   font-weight: 600;
 }
@@ -111,47 +120,92 @@ p, td, li, span, button, a, select, label {
   font-style: italic;
 }
 
-#root {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-}
-
 /* ---- Color Palette Reference ----
-   Background:       #F5EFE6 (soft deep ivory)
+   Background:       #0D0D12 (deep dark)
+   Surface:          rgba(255, 255, 255, 0.04-0.08)
    Primary accent:   #1F2A44 (deep indigo)
-   Secondary accent: #C6A75E (warm gold)
-   Hover highlight:  #E8C98A (muted saffron glow)
-   Text:             #1A1A1A (charcoal)
-   Muted text:       #6B6B6B
+   Gold accent:      #C6A75E (warm gold)
+   Gold bright:      #D4B96E
+   Text primary:     #E8E0D4 (warm cream)
+   Text secondary:   #9A9188 (muted)
    Success:          #2D6A4F
    Error:            #9B3B3B
    ---- */
 
-/* ---- Manuscript Ornament Separator ---- */
+/* ---- Utility classes ---- */
 
-.ornament-separator {
+.fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* ---- Glass Card ---- */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(198, 167, 94, 0.12);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(198, 167, 94, 0.25);
+  box-shadow: 0 8px 32px rgba(198, 167, 94, 0.06);
+}
+
+/* ---- Site Header ---- */
+
+.site-header {
+  padding: 1.2rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(198, 167, 94, 0.08);
+}
+
+.site-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
-  margin: 2rem 0;
+}
+
+.site-logo {
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
   color: #C6A75E;
-  opacity: 0.5;
+  text-decoration: none;
+  letter-spacing: 0.02em;
 }
 
-.ornament-separator::before,
-.ornament-separator::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #C6A75E, transparent);
+.site-logo:hover {
+  color: #D4B96E;
 }
 
-.ornament-separator .ornament-symbol {
-  font-size: 1.2rem;
-  font-family: 'Noto Serif Devanagari', serif;
-  letter-spacing: 0.3em;
+.nav-links {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.nav-link {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #9A9188;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  color: #E8E0D4;
+  background: rgba(198, 167, 94, 0.06);
+}
+
+.nav-link.active {
+  color: #C6A75E;
+  background: rgba(198, 167, 94, 0.08);
 }
 
 /* ---- Buttons ---- */
@@ -159,9 +213,9 @@ p, td, li, span, button, a, select, label {
 .btn {
   display: inline-block;
   padding: 0.7rem 1.6rem;
-  border: 1.5px solid #C6A75E;
-  background: #fff;
-  color: #1F2A44;
+  border: 1.5px solid rgba(198, 167, 94, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  color: #E8E0D4;
   font-size: 0.92rem;
   font-weight: 500;
   border-radius: 10px;
@@ -173,58 +227,87 @@ p, td, li, span, button, a, select, label {
 
 .btn:hover {
   background: #1F2A44;
-  color: #F5EFE6;
-  border-color: #1F2A44;
-  box-shadow: 0 4px 16px rgba(31, 42, 68, 0.18);
+  color: #F0E6D0;
+  border-color: #C6A75E;
+  box-shadow: 0 4px 20px rgba(198, 167, 94, 0.15);
   transform: translateY(-1px);
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #1F2A44 0%, #2C3A5E 100%);
-  color: #F5EFE6;
+  color: #F0E6D0;
   font-size: 1.05rem;
   padding: 0.9rem 2.4rem;
-  border: none;
+  border: 1px solid rgba(198, 167, 94, 0.2);
   border-radius: 12px;
   font-weight: 600;
   letter-spacing: 0.03em;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #162036 0%, #1F2A44 100%);
-  box-shadow: 0 6px 24px rgba(31, 42, 68, 0.25);
+  background: linear-gradient(135deg, #2C3A5E 0%, #3D4E78 100%);
+  box-shadow: 0 6px 28px rgba(198, 167, 94, 0.2);
+  border-color: #C6A75E;
 }
 
 .btn-secondary {
   background: transparent;
   color: #C6A75E;
-  border: 1.5px solid #C6A75E;
+  border: 1.5px solid rgba(198, 167, 94, 0.3);
 }
 
 .btn-secondary:hover {
-  background: #C6A75E;
-  color: #1F2A44;
+  background: rgba(198, 167, 94, 0.1);
+  color: #D4B96E;
   border-color: #C6A75E;
 }
 
 .btn-correct {
   border-color: #2D6A4F;
-  color: #2D6A4F;
+  color: #5EBB8A;
 }
 
 .btn-correct:hover {
-  background: #2D6A4F;
-  color: #fff;
+  background: rgba(45, 106, 79, 0.15);
+  color: #5EBB8A;
+  border-color: #2D6A4F;
 }
 
 .btn-incorrect {
   border-color: #9B3B3B;
-  color: #9B3B3B;
+  color: #D47070;
 }
 
 .btn-incorrect:hover {
-  background: #9B3B3B;
-  color: #fff;
+  background: rgba(155, 59, 59, 0.15);
+  color: #D47070;
+  border-color: #9B3B3B;
+}
+
+/* ---- Manuscript Ornament Separator ---- */
+
+.ornament-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+  color: #C6A75E;
+  opacity: 0.35;
+}
+
+.ornament-separator::before,
+.ornament-separator::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(198, 167, 94, 0.4), transparent);
+}
+
+.ornament-separator .ornament-symbol {
+  font-size: 1.2rem;
+  font-family: 'Noto Serif Devanagari', serif;
+  letter-spacing: 0.3em;
 }
 
 /* ---- Home Page ---- */
@@ -254,21 +337,21 @@ p, td, li, span, button, a, select, label {
 
 .home-page h1 {
   font-size: 2.8rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 0.8rem;
   position: relative;
   z-index: 1;
-  animation: fadeInUp 0.8s ease-out;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .subtitle {
   font-size: 1.05rem;
-  color: #6B6B6B;
+  color: #9A9188;
   margin-bottom: 3rem;
   position: relative;
   z-index: 1;
   letter-spacing: 0.03em;
-  animation: fadeInUp 0.8s ease-out 0.15s both;
+  animation: fadeIn 0.8s ease-out 0.15s both;
 }
 
 .home-actions {
@@ -278,7 +361,7 @@ p, td, li, span, button, a, select, label {
   flex-wrap: wrap;
   position: relative;
   z-index: 1;
-  animation: fadeInUp 0.8s ease-out 0.3s both;
+  animation: fadeIn 0.8s ease-out 0.3s both;
 }
 
 /* ---- Verse Index Page ---- */
@@ -290,11 +373,11 @@ p, td, li, span, button, a, select, label {
 .verse-index-page h1 {
   font-size: 2rem;
   margin-bottom: 0.3rem;
-  color: #1F2A44;
+  color: #F0E6D0;
 }
 
 .index-subtitle {
-  color: #6B6B6B;
+  color: #9A9188;
   font-size: 0.92rem;
   margin-bottom: 1.5rem;
 }
@@ -305,12 +388,11 @@ p, td, li, span, button, a, select, label {
   gap: 1.2rem;
   margin-bottom: 2rem;
   padding: 1.2rem;
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 14px;
-  border: 1px solid rgba(198, 167, 94, 0.15);
-  box-shadow: 0 2px 12px rgba(31, 42, 68, 0.04);
+  border: 1px solid rgba(198, 167, 94, 0.1);
 }
 
 .filter-group {
@@ -334,9 +416,9 @@ p, td, li, span, button, a, select, label {
 
 .pill {
   padding: 0.38rem 0.9rem;
-  border: 1px solid rgba(198, 167, 94, 0.3);
-  background: rgba(255, 255, 255, 0.6);
-  color: #1F2A44;
+  border: 1px solid rgba(198, 167, 94, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  color: #E8E0D4;
   font-size: 0.82rem;
   font-weight: 500;
   border-radius: 20px;
@@ -345,24 +427,29 @@ p, td, li, span, button, a, select, label {
 }
 
 .pill:hover {
-  border-color: #C6A75E;
-  background: rgba(198, 167, 94, 0.08);
+  border-color: rgba(198, 167, 94, 0.4);
+  background: rgba(198, 167, 94, 0.06);
 }
 
 .pill.active {
   background: #1F2A44;
-  color: #F5EFE6;
-  border-color: #1F2A44;
+  color: #F0E6D0;
+  border-color: rgba(198, 167, 94, 0.3);
 }
 
 .filter-select {
   padding: 0.45rem 0.85rem;
-  border: 1px solid rgba(198, 167, 94, 0.3);
+  border: 1px solid rgba(198, 167, 94, 0.2);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.04);
   font-size: 0.85rem;
-  color: #1F2A44;
+  color: #E8E0D4;
   font-family: inherit;
+}
+
+.filter-select option {
+  background: #1A1A24;
+  color: #E8E0D4;
 }
 
 .chapter-group {
@@ -374,7 +461,7 @@ p, td, li, span, button, a, select, label {
   color: #C6A75E;
   margin-bottom: 0.8rem;
   padding-bottom: 0.4rem;
-  border-bottom: 1px solid rgba(198, 167, 94, 0.25);
+  border-bottom: 1px solid rgba(198, 167, 94, 0.15);
   font-weight: 600;
 }
 
@@ -391,17 +478,17 @@ p, td, li, span, button, a, select, label {
 
 .verse-index-card {
   padding: 1.1rem 1.3rem;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(198, 167, 94, 0.15);
+  border: 1px solid rgba(198, 167, 94, 0.08);
   border-radius: 12px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .verse-index-card:hover {
-  box-shadow: 0 6px 24px rgba(31, 42, 68, 0.08);
-  border-color: #C6A75E;
+  box-shadow: 0 6px 24px rgba(198, 167, 94, 0.08);
+  border-color: rgba(198, 167, 94, 0.25);
   transform: translateY(-2px);
 }
 
@@ -409,7 +496,7 @@ p, td, li, span, button, a, select, label {
   display: block;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 0.25rem;
   font-family: 'Noto Serif Devanagari', Georgia, serif;
 }
@@ -420,7 +507,7 @@ p, td, li, span, button, a, select, label {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #C6A75E;
-  background: rgba(198, 167, 94, 0.1);
+  background: rgba(198, 167, 94, 0.08);
   padding: 0.18rem 0.55rem;
   border-radius: 10px;
   margin-bottom: 0.4rem;
@@ -429,59 +516,39 @@ p, td, li, span, button, a, select, label {
 
 .card-preview {
   font-size: 0.85rem;
-  color: #6B6B6B;
+  color: #9A9188;
   line-height: 1.5;
 }
 
 /* ---- Verse Page ---- */
 
 .verse-page {
-  padding-top: 1rem;
-}
-
-.verse-nav {
-  margin-bottom: 1.5rem;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  color: #C6A75E;
-  text-decoration: none;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.back-link:hover {
-  color: #1F2A44;
+  padding-top: 0.5rem;
 }
 
 .loading,
 .error {
   text-align: center;
   padding: 3rem 0;
-  color: #6B6B6B;
+  color: #9A9188;
 }
 
 /* ---- Section Spacing ---- */
 
 .verse-viewer,
-.chant-mode,
+.audio-buttons,
 .grammar-intro,
 .commentary-panel,
 .flashcard,
 .devanagari-trainer {
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
 /* ---- Verse Viewer ---- */
 
-.verse-viewer h2 {
+.verse-viewer .verse-label {
   font-size: 1.5rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 0.6rem;
   text-align: center;
 }
@@ -496,18 +563,99 @@ p, td, li, span, button, a, select, label {
   font-weight: 600;
 }
 
-/* ---- Devanagari Hero Display ---- */
+/* ---- Hero Transliteration (renders FIRST) ---- */
+
+.verse-hero-card {
+  padding: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-translit {
+  font-size: 1.35rem;
+  line-height: 2.4;
+  text-align: center;
+  font-style: italic;
+  color: #F0E6D0;
+}
+
+.hero-translit .translit-line {
+  display: block;
+  margin-bottom: 0.1rem;
+}
+
+.hero-translit .translit-line:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
+.hero-translit .translit-line:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
+.hero-translit .translit-line:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
+.hero-translit .translit-line:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
+
+/* ---- Transliteration (generic) ---- */
+
+.transliteration-block {
+  font-size: 1.1rem;
+  line-height: 2.1;
+  text-align: center;
+}
+
+.translit-line {
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.word-clickable {
+  color: #C6A75E;
+  cursor: pointer;
+  border-bottom: 1px dashed rgba(198, 167, 94, 0.4);
+  transition: all 0.2s;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.word-clickable:hover {
+  color: #D4B96E;
+  border-color: #D4B96E;
+  background: rgba(198, 167, 94, 0.08);
+  text-shadow: 0 0 12px rgba(198, 167, 94, 0.3);
+}
+
+.word-plain {
+  color: #E8E0D4;
+}
+
+/* ---- Translation (always visible) ---- */
+
+.translation-block.always-visible {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.3rem 1.5rem;
+  border-radius: 12px;
+  border-left: 3px solid rgba(198, 167, 94, 0.4);
+  margin-bottom: 1.5rem;
+  animation: fadeIn 0.6s ease-out 0.3s both;
+}
+
+.translation-block.always-visible p {
+  font-style: italic;
+  color: #BDB4A6;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* ---- Devanagari Section ---- */
+
+.devanagari-section {
+  text-align: center;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 
 .devanagari-block {
-  padding: 1.5rem 0;
+  padding: 1rem 0;
   text-align: center;
-  background: transparent;
 }
 
 .devanagari-block p {
   font-size: 1.75rem;
   line-height: 2.4;
-  color: #1F2A44;
+  color: #F0E6D0;
   font-weight: 500;
   transition: text-shadow 0.3s ease;
   cursor: default;
@@ -517,140 +665,184 @@ p, td, li, span, button, a, select, label {
   text-shadow: 0 0 20px rgba(198, 167, 94, 0.3), 0 0 40px rgba(198, 167, 94, 0.1);
 }
 
-/* ---- Layout Toggle ---- */
+/* ---- Word-by-Word Breakdown ---- */
 
-.layout-toggle {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-  margin-bottom: 1.2rem;
+.word-breakdown-section {
+  margin-bottom: 2rem;
 }
 
-.layout-toggle button {
-  padding: 0.35rem 0.9rem;
-  font-size: 0.78rem;
-  font-weight: 500;
-  border: 1px solid rgba(198, 167, 94, 0.3);
-  background: rgba(255, 255, 255, 0.5);
-  color: #1F2A44;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.layout-toggle button.active {
-  background: #1F2A44;
-  color: #F5EFE6;
-  border-color: #1F2A44;
-}
-
-.layout-toggle button:hover:not(.active) {
-  border-color: #C6A75E;
-}
-
-/* Learning layout — word spaced */
-.devanagari-block.learning-layout p {
-  letter-spacing: 0.15em;
-  word-spacing: 0.4em;
-}
-
-/* ---- Transliteration ---- */
-
-.transliteration-block {
-  padding: 0.8rem 0 1rem;
-  font-size: 1.1rem;
-  line-height: 2.1;
+.word-breakdown-section h3 {
+  font-size: 1.2rem;
+  color: #F0E6D0;
   text-align: center;
+  margin-bottom: 0.3rem;
 }
 
-/* Each transliteration line rendered separately for 4-line layout */
-.translit-line {
-  display: block;
-  margin-bottom: 0.15rem;
+.section-hint {
+  text-align: center;
+  font-size: 0.82rem;
+  color: #9A9188;
+  margin-bottom: 1rem;
 }
 
-/* Animated sequential reveal on transliteration lines */
-.translit-line:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
-.translit-line:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
-.translit-line:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
-.translit-line:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
-
-.word-clickable {
-  color: #C6A75E;
-  cursor: pointer;
-  border-bottom: 1px dashed rgba(198, 167, 94, 0.5);
-  transition: all 0.2s;
-  border-radius: 2px;
-  padding: 0 2px;
+.word-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
 }
 
-.word-clickable:hover {
-  color: #1F2A44;
-  border-color: #1F2A44;
-  background: rgba(198, 167, 94, 0.08);
-  text-shadow: 0 0 12px rgba(198, 167, 94, 0.2);
-}
-
-.word-plain {
-  color: #1A1A1A;
-}
-
-.line-break {
-  color: #ccc;
-}
-
-.translation-toggle {
-  display: block;
-  margin: 1.2rem auto;
-  padding: 0.55rem 1.5rem;
-  border: 1px solid rgba(198, 167, 94, 0.3);
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: #1F2A44;
+.word-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(198, 167, 94, 0.12);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
+  font-family: inherit;
+  color: inherit;
 }
 
-.translation-toggle:hover {
-  background: rgba(198, 167, 94, 0.08);
+.word-chip:hover {
   border-color: #C6A75E;
+  background: rgba(198, 167, 94, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(198, 167, 94, 0.1);
 }
 
-.translation-block {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 1.3rem 1.5rem;
-  border-radius: 12px;
-  border-left: 3px solid #C6A75E;
-  margin-top: 0.5rem;
-  animation: fadeInUp 0.4s ease-out;
+.word-chip-devanagari {
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
+  font-size: 1.1rem;
+  color: #F0E6D0;
 }
 
-.translation-block p {
-  font-style: italic;
-  color: #4a4a4a;
-  line-height: 1.7;
+.word-chip-meaning {
+  font-size: 0.72rem;
+  color: #C6A75E;
+  text-transform: lowercase;
 }
+
+/* ---- Audio Buttons ---- */
+
+.audio-buttons {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.audio-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.2rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(198, 167, 94, 0.15);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #E8E0D4;
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.audio-btn:hover:not(:disabled) {
+  border-color: #C6A75E;
+  background: rgba(198, 167, 94, 0.06);
+  box-shadow: 0 6px 24px rgba(198, 167, 94, 0.1);
+  transform: translateY(-2px);
+}
+
+.audio-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.audio-btn.playing {
+  border-color: #C6A75E;
+  background: rgba(198, 167, 94, 0.08);
+  box-shadow: 0 0 30px rgba(198, 167, 94, 0.12);
+}
+
+.audio-btn-traditional .audio-icon {
+  color: #C6A75E;
+}
+
+.audio-btn-vibe .audio-icon {
+  color: #7B68EE;
+}
+
+.audio-btn-vibe:hover:not(:disabled) {
+  border-color: #7B68EE;
+  box-shadow: 0 6px 24px rgba(123, 104, 238, 0.1);
+}
+
+.audio-btn-vibe.playing {
+  border-color: #7B68EE;
+  background: rgba(123, 104, 238, 0.08);
+  box-shadow: 0 0 30px rgba(123, 104, 238, 0.12);
+}
+
+.audio-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.audio-soon {
+  font-size: 0.68rem;
+  color: #9A9188;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.audio-wave {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  height: 20px;
+}
+
+.audio-wave span {
+  display: block;
+  width: 3px;
+  height: 100%;
+  background: #C6A75E;
+  border-radius: 2px;
+  animation: audioWave 0.8s ease-in-out infinite;
+}
+
+.audio-btn-vibe .audio-wave span {
+  background: #7B68EE;
+}
+
+.audio-wave span:nth-child(1) { animation-delay: 0s; }
+.audio-wave span:nth-child(2) { animation-delay: 0.15s; }
+.audio-wave span:nth-child(3) { animation-delay: 0.3s; }
+.audio-wave span:nth-child(4) { animation-delay: 0.45s; }
 
 /* ---- Grammar Modal ---- */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(31, 42, 68, 0.35);
+  background: rgba(13, 13, 18, 0.7);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   z-index: 100;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .modal-content {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(26, 26, 36, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px 20px 0 0;
@@ -658,8 +850,8 @@ p, td, li, span, button, a, select, label {
   max-width: 520px;
   width: 100%;
   position: relative;
-  box-shadow: 0 -8px 40px rgba(31, 42, 68, 0.15);
-  border: 1px solid rgba(198, 167, 94, 0.15);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(198, 167, 94, 0.12);
   border-bottom: none;
   animation: slideUpModal 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -680,13 +872,13 @@ p, td, li, span, button, a, select, label {
   top: 1rem;
   right: 1.2rem;
   border: none;
-  background: rgba(31, 42, 68, 0.06);
+  background: rgba(255, 255, 255, 0.06);
   width: 32px;
   height: 32px;
   border-radius: 50%;
   font-size: 1.2rem;
   cursor: pointer;
-  color: #6B6B6B;
+  color: #9A9188;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -694,13 +886,13 @@ p, td, li, span, button, a, select, label {
 }
 
 .modal-close:hover {
-  background: rgba(31, 42, 68, 0.12);
-  color: #1F2A44;
+  background: rgba(255, 255, 255, 0.1);
+  color: #E8E0D4;
 }
 
 .modal-devanagari {
   font-size: 2rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   text-align: center;
   margin-bottom: 0.2rem;
   font-weight: 600;
@@ -715,7 +907,7 @@ p, td, li, span, button, a, select, label {
 
 .modal-content h3 {
   font-size: 1.1rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 0.8rem;
   font-family: 'Noto Serif Devanagari', Georgia, serif;
   font-style: italic;
@@ -737,8 +929,9 @@ p, td, li, span, button, a, select, label {
 
 .grammar-table td {
   padding: 0.6rem 0.8rem;
-  border-bottom: 1px solid rgba(198, 167, 94, 0.1);
+  border-bottom: 1px solid rgba(198, 167, 94, 0.08);
   font-size: 0.93rem;
+  color: #E8E0D4;
 }
 
 .grammar-label {
@@ -751,21 +944,21 @@ p, td, li, span, button, a, select, label {
 }
 
 .grammar-note {
-  background: rgba(245, 239, 230, 0.6);
+  background: rgba(255, 255, 255, 0.04);
   padding: 0.9rem 1.1rem;
   border-radius: 10px;
   font-size: 0.88rem;
-  color: #4a4a4a;
+  color: #BDB4A6;
   line-height: 1.65;
   margin-bottom: 0.8rem;
 }
 
 .modal-explanation {
-  background: rgba(245, 239, 230, 0.6);
+  background: rgba(255, 255, 255, 0.04);
   padding: 0.9rem 1.1rem;
   border-radius: 10px;
   font-size: 0.88rem;
-  color: #4a4a4a;
+  color: #BDB4A6;
   line-height: 1.65;
   margin-bottom: 0.8rem;
 }
@@ -780,12 +973,12 @@ p, td, li, span, button, a, select, label {
 }
 
 .spiritual-insight {
-  background: linear-gradient(135deg, rgba(198, 167, 94, 0.06), rgba(198, 167, 94, 0.12));
+  background: linear-gradient(135deg, rgba(198, 167, 94, 0.04), rgba(198, 167, 94, 0.08));
   padding: 0.9rem 1.1rem;
   border-radius: 10px;
   border-left: 3px solid #C6A75E;
   font-size: 0.88rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   line-height: 1.6;
   font-style: italic;
 }
@@ -803,19 +996,19 @@ p, td, li, span, button, a, select, label {
 /* ---- Grammar Intro Section ---- */
 
 .grammar-intro {
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .grammar-intro h3 {
   font-size: 1.3rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 0.3rem;
   text-align: center;
 }
 
 .grammar-intro .intro-subtitle {
   font-size: 0.88rem;
-  color: #6B6B6B;
+  color: #9A9188;
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -827,18 +1020,15 @@ p, td, li, span, button, a, select, label {
 }
 
 .grammar-intro-item {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(198, 167, 94, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(198, 167, 94, 0.08);
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.25s;
 }
 
 .grammar-intro-item:hover {
-  border-color: rgba(198, 167, 94, 0.3);
-  box-shadow: 0 2px 12px rgba(31, 42, 68, 0.04);
+  border-color: rgba(198, 167, 94, 0.2);
 }
 
 .grammar-intro-header {
@@ -851,7 +1041,7 @@ p, td, li, span, button, a, select, label {
   background: transparent;
   font-size: 0.92rem;
   font-weight: 600;
-  color: #1F2A44;
+  color: #E8E0D4;
   cursor: pointer;
   text-align: left;
   font-family: inherit;
@@ -859,7 +1049,7 @@ p, td, li, span, button, a, select, label {
 }
 
 .grammar-intro-header:hover {
-  background: rgba(198, 167, 94, 0.05);
+  background: rgba(198, 167, 94, 0.04);
 }
 
 .grammar-intro-header .term-sanskrit {
@@ -884,39 +1074,37 @@ p, td, li, span, button, a, select, label {
 .grammar-intro-body {
   padding: 0 1.2rem 1rem;
   font-size: 0.88rem;
-  color: #4a4a4a;
+  color: #BDB4A6;
   line-height: 1.7;
-  animation: fadeInUp 0.3s ease-out;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .grammar-intro-body .verse-example {
   margin-top: 0.6rem;
   padding: 0.6rem 0.8rem;
-  background: rgba(198, 167, 94, 0.06);
+  background: rgba(198, 167, 94, 0.04);
   border-radius: 8px;
-  border-left: 2px solid #C6A75E;
+  border-left: 2px solid rgba(198, 167, 94, 0.4);
   font-style: italic;
   font-size: 0.85rem;
-  color: #1F2A44;
+  color: #E8E0D4;
 }
 
 /* ---- Commentary Panel ---- */
 
 .commentary-panel h3 {
   font-size: 1.3rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 1rem;
   text-align: center;
 }
 
 .accordion-item {
-  border: 1px solid rgba(198, 167, 94, 0.15);
+  border: 1px solid rgba(198, 167, 94, 0.08);
   border-radius: 12px;
   margin-bottom: 0.5rem;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .accordion-header {
@@ -929,7 +1117,7 @@ p, td, li, span, button, a, select, label {
   background: transparent;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #1F2A44;
+  color: #E8E0D4;
   cursor: pointer;
   text-align: left;
   transition: background 0.2s;
@@ -937,11 +1125,11 @@ p, td, li, span, button, a, select, label {
 }
 
 .accordion-header.open {
-  background: rgba(198, 167, 94, 0.06);
+  background: rgba(198, 167, 94, 0.04);
 }
 
 .accordion-header:hover {
-  background: rgba(198, 167, 94, 0.06);
+  background: rgba(198, 167, 94, 0.04);
 }
 
 .accordion-arrow {
@@ -953,10 +1141,9 @@ p, td, li, span, button, a, select, label {
 .accordion-body {
   padding: 1rem 1.1rem;
   font-size: 0.93rem;
-  color: #4a4a4a;
+  color: #BDB4A6;
   line-height: 1.7;
-  background: rgba(255, 255, 255, 0.2);
-  animation: fadeInUp 0.3s ease-out;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .key-phrases {
@@ -977,67 +1164,8 @@ p, td, li, span, button, a, select, label {
 
 .key-phrases li {
   font-size: 0.85rem;
-  color: #6B6B6B;
+  color: #9A9188;
   margin-bottom: 0.2rem;
-}
-
-/* ---- Chant Mode ---- */
-
-.chant-mode {
-  text-align: center;
-}
-
-.chant-mode h3 {
-  font-size: 1.3rem;
-  color: #1F2A44;
-  margin-bottom: 1.2rem;
-}
-
-.chant-display {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 2rem;
-  border-radius: 16px;
-  border: 1px solid rgba(198, 167, 94, 0.15);
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 12px rgba(31, 42, 68, 0.04);
-}
-
-.chant-line {
-  font-size: 1.6rem;
-  line-height: 2.2;
-  color: #1F2A44;
-  font-weight: 500;
-}
-
-/* Chant line sequential reveal */
-.chant-line:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
-.chant-line:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
-.chant-line:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
-.chant-line:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
-
-.chant-transliteration {
-  font-size: 1rem;
-  color: #6B6B6B;
-  margin-bottom: 0.8rem;
-  text-align: center;
-}
-
-.chant-transliteration p {
-  margin-bottom: 0.1rem;
-}
-
-/* Sequential reveal on chant transliteration lines */
-.chant-transliteration p:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
-.chant-transliteration p:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
-.chant-transliteration p:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
-.chant-transliteration p:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
-
-.chant-placeholder {
-  font-size: 0.82rem;
-  color: #aaa;
-  font-style: italic;
 }
 
 /* ---- Flashcard ---- */
@@ -1048,15 +1176,15 @@ p, td, li, span, button, a, select, label {
 
 .flashcard h3 {
   font-size: 1.3rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 1rem;
 }
 
 .flashcard-card {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(198, 167, 94, 0.15);
+  border: 1px solid rgba(198, 167, 94, 0.1);
   border-radius: 16px;
   padding: 2.5rem 2rem;
   min-height: 180px;
@@ -1065,28 +1193,23 @@ p, td, li, span, button, a, select, label {
   align-items: center;
   justify-content: center;
   gap: 1.2rem;
-  box-shadow: 0 4px 20px rgba(31, 42, 68, 0.06);
   transition: all 0.3s;
   perspective: 1000px;
 }
 
-.flashcard-card:hover {
-  box-shadow: 0 8px 30px rgba(31, 42, 68, 0.1);
-}
-
 .flashcard-prompt {
   font-size: 1.15rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   font-family: 'Noto Serif Devanagari', Georgia, serif;
   font-weight: 500;
 }
 
 .flashcard-answer {
   font-size: 0.95rem;
-  color: #2D6A4F;
+  color: #5EBB8A;
   font-style: italic;
   padding: 0.7rem 1.2rem;
-  background: rgba(45, 106, 79, 0.06);
+  background: rgba(45, 106, 79, 0.08);
   border-radius: 10px;
   animation: flipIn 0.4s ease-out;
 }
@@ -1106,7 +1229,7 @@ p, td, li, span, button, a, select, label {
 
 .quiz-score {
   font-size: 1.3rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -1119,13 +1242,13 @@ p, td, li, span, button, a, select, label {
 
 .devanagari-trainer h3 {
   font-size: 1.3rem;
-  color: #1F2A44;
+  color: #F0E6D0;
   margin-bottom: 0.5rem;
 }
 
 .trainer-counter {
   font-size: 0.85rem;
-  color: #6B6B6B;
+  color: #9A9188;
   margin-bottom: 1rem;
 }
 
@@ -1133,10 +1256,8 @@ p, td, li, span, button, a, select, label {
   width: 150px;
   height: 170px;
   margin: 0 auto 0.5rem;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 2px solid rgba(198, 167, 94, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(198, 167, 94, 0.15);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -1147,17 +1268,17 @@ p, td, li, span, button, a, select, label {
 
 .trainer-card:hover {
   border-color: #C6A75E;
-  box-shadow: 0 6px 20px rgba(31, 42, 68, 0.08);
+  box-shadow: 0 6px 20px rgba(198, 167, 94, 0.1);
   transform: translateY(-2px);
 }
 
 .trainer-card.flipped {
-  background: rgba(245, 239, 230, 0.7);
+  background: rgba(198, 167, 94, 0.06);
 }
 
 .trainer-devanagari {
   font-size: 3.5rem;
-  color: #1F2A44;
+  color: #F0E6D0;
 }
 
 .trainer-transliteration {
@@ -1168,7 +1289,7 @@ p, td, li, span, button, a, select, label {
 
 .trainer-hint {
   font-size: 0.8rem;
-  color: #aaa;
+  color: #9A9188;
   margin-bottom: 0.8rem;
 }
 
@@ -1181,7 +1302,309 @@ p, td, li, span, button, a, select, label {
 
 .trainer-sound-placeholder {
   font-size: 0.82rem;
-  color: #aaa;
+  color: #9A9188;
+  font-style: italic;
+}
+
+/* ---- Dashboard Page ---- */
+
+.dashboard-page {
+  padding-top: 0.5rem;
+}
+
+.dashboard-page h1 {
+  font-size: 2rem;
+  color: #F0E6D0;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.dashboard-subtitle {
+  text-align: center;
+  color: #9A9188;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-section {
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-link-card {
+  text-decoration: none;
+  color: inherit;
+  padding: 1.5rem;
+  cursor: pointer;
+}
+
+.dashboard-link-card h3 {
+  font-size: 1.1rem;
+  color: #C6A75E;
+  margin-bottom: 0.4rem;
+}
+
+.dashboard-link-card p {
+  font-size: 0.88rem;
+  color: #9A9188;
+  line-height: 1.5;
+}
+
+.dashboard-link-card:hover h3 {
+  color: #D4B96E;
+}
+
+/* ---- Conjugations Page ---- */
+
+.conjugations-page {
+  padding-top: 0.5rem;
+}
+
+.conjugations-page h1 {
+  font-size: 2rem;
+  color: #F0E6D0;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.conjugations-subtitle {
+  text-align: center;
+  color: #9A9188;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+.conj-tabs {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.conj-tab {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: 1px solid rgba(198, 167, 94, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: #9A9188;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.conj-tab:hover {
+  border-color: rgba(198, 167, 94, 0.4);
+  color: #E8E0D4;
+}
+
+.conj-tab.active {
+  background: #1F2A44;
+  color: #F0E6D0;
+  border-color: rgba(198, 167, 94, 0.3);
+}
+
+.conj-section {
+  margin-bottom: 2.5rem;
+}
+
+.conj-section h2 {
+  font-size: 1.3rem;
+  color: #F0E6D0;
+  margin-bottom: 0.6rem;
+  text-align: center;
+}
+
+.conj-note {
+  color: #9A9188;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.conj-sub-heading {
+  font-size: 1rem;
+  color: #C6A75E;
+  margin: 1.5rem 0 0.8rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.conj-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.conj-table th {
+  padding: 0.7rem 0.8rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #C6A75E;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid rgba(198, 167, 94, 0.15);
+  background: rgba(198, 167, 94, 0.04);
+}
+
+.conj-table td {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  color: #E8E0D4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
+  font-style: italic;
+}
+
+.conj-table .case-label {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  color: #C6A75E;
+  font-size: 0.82rem;
+}
+
+.conj-table .case-usage {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 0.8rem;
+  color: #9A9188;
+}
+
+.conj-extra-info {
+  margin-top: 1.5rem;
+}
+
+.conj-extra-info h4 {
+  font-size: 0.95rem;
+  color: #C6A75E;
+  margin-bottom: 0.4rem;
+}
+
+.conj-extra-info p {
+  font-size: 0.88rem;
+  color: #BDB4A6;
+  line-height: 1.6;
+}
+
+.conj-extra-info strong {
+  color: #F0E6D0;
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
+  font-style: italic;
+}
+
+.concepts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.concept-card {
+  padding: 1.2rem 1.4rem;
+}
+
+.concept-card h3 {
+  font-size: 1rem;
+  color: #C6A75E;
+  margin-bottom: 0.4rem;
+}
+
+.concept-card p {
+  font-size: 0.88rem;
+  color: #BDB4A6;
+  line-height: 1.6;
+}
+
+/* ---- Back Link (legacy support) ---- */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #C6A75E;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #D4B96E;
+}
+
+/* ---- Chant Mode (kept for compatibility) ---- */
+
+.chant-mode {
+  text-align: center;
+}
+
+.chant-mode h3 {
+  font-size: 1.3rem;
+  color: #F0E6D0;
+  margin-bottom: 1.2rem;
+}
+
+.chant-display {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(198, 167, 94, 0.1);
+  margin-bottom: 1rem;
+}
+
+.chant-line {
+  font-size: 1.6rem;
+  line-height: 2.2;
+  color: #F0E6D0;
+  font-weight: 500;
+}
+
+.chant-line:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
+.chant-line:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
+.chant-line:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
+.chant-line:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
+
+.chant-transliteration {
+  font-size: 1rem;
+  color: #9A9188;
+  margin-bottom: 0.8rem;
+  text-align: center;
+}
+
+.chant-transliteration p {
+  margin-bottom: 0.1rem;
+}
+
+.chant-transliteration p:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
+.chant-transliteration p:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
+.chant-transliteration p:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
+.chant-transliteration p:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
+
+.chant-placeholder {
+  font-size: 0.82rem;
+  color: #9A9188;
   font-style: italic;
 }
 
@@ -1189,7 +1612,7 @@ p, td, li, span, button, a, select, label {
 
 @media (max-width: 600px) {
   #root {
-    padding: 1.2rem 1rem;
+    padding: 0 1rem 1.5rem;
   }
 
   .home-page {
@@ -1208,6 +1631,25 @@ p, td, li, span, button, a, select, label {
   .home-actions {
     flex-direction: column;
     align-items: center;
+  }
+
+  .site-nav {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .nav-links {
+    gap: 0.2rem;
+  }
+
+  .nav-link {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .hero-translit {
+    font-size: 1.1rem;
+    line-height: 2;
   }
 
   .devanagari-block p {
@@ -1245,5 +1687,19 @@ p, td, li, span, button, a, select, label {
 
   .chant-display {
     padding: 1.2rem;
+  }
+
+  .audio-buttons {
+    flex-direction: column;
+  }
+
+  .conj-table td,
+  .conj-table th {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .dashboard-links {
+    grid-template-columns: 1fr;
   }
 }
