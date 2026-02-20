@@ -12,6 +12,7 @@ interface Question {
   type: QuestionType
   prompt: string
   answer: string
+  whyMatters?: string
 }
 
 function buildQuestions(words: Word[]): Question[] {
@@ -22,6 +23,7 @@ function buildQuestions(words: Word[]): Question[] {
       type: 'meaning',
       prompt: `What does "${w.word}" mean?`,
       answer: w.meaning,
+      whyMatters: w.spiritual_insight || undefined,
     })
     if (w.grammatical_case || w.tense) {
       questions.push({
@@ -29,6 +31,7 @@ function buildQuestions(words: Word[]): Question[] {
         type: 'case',
         prompt: `What is the grammatical form of "${w.word}"?`,
         answer: [w.grammatical_case, w.number, w.tense].filter(Boolean).join(', '),
+        whyMatters: w.grammar_note || undefined,
       })
     }
   }
@@ -107,7 +110,12 @@ export default function Flashcard({ words }: FlashcardProps) {
           <button className="btn" onClick={() => setRevealed(true)}>Reveal Answer</button>
         ) : (
           <>
-            <p className="flashcard-answer">{current.answer}</p>
+            <p className="flashcard-answer">
+              {current.answer}
+              {current.whyMatters && (
+                <span className="why-matters">{current.whyMatters}</span>
+              )}
+            </p>
             <div className="flashcard-actions">
               <button className="btn btn-correct" onClick={handleCorrect}>I knew it</button>
               <button className="btn btn-incorrect" onClick={handleIncorrect}>I didn't know</button>

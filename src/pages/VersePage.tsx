@@ -6,8 +6,9 @@ import type { Word } from '../types/grammar'
 import type { Commentary } from '../types/commentary'
 import VerseViewer from '../components/VerseViewer'
 import GrammarModal from '../components/GrammarModal'
-import CommentaryPanel from '../components/CommentaryPanel'
 import ChantMode from '../components/ChantMode'
+import GrammarIntroSection from '../components/GrammarIntroSection'
+import CommentaryPanel from '../components/CommentaryPanel'
 import Flashcard from '../components/Flashcard'
 import DevanagariTrainer from '../components/DevanagariTrainer'
 
@@ -82,15 +83,39 @@ export default function VersePage() {
         <Link to="/verses" className="back-link">&larr; All Verses</Link>
       </nav>
 
+      {/* 1. Hero Sanskrit (4-line cinematic) + 2. Transliteration + 3. Translation */}
       <VerseViewer verse={verse} words={words} onWordClick={setSelectedWord} />
 
+      {/* Grammar modal (overlay) */}
       {selectedWord && (
         <GrammarModal word={selectedWord} onClose={() => setSelectedWord(null)} />
       )}
 
-      {commentaries.length > 0 && <CommentaryPanel commentaries={commentaries} />}
+      {/* Ornament separator */}
+      <div className="ornament-separator">
+        <span className="ornament-symbol">&#x0970; &#x0970; &#x0970;</span>
+      </div>
+
+      {/* 4. Chant Mode */}
       <ChantMode verse={verse} />
+
+      {/* 5. Understanding Sanskrit Grammar */}
+      <GrammarIntroSection />
+
+      {/* Ornament separator */}
+      <div className="ornament-separator">
+        <span className="ornament-symbol">&#x0970; &#x0970; &#x0970;</span>
+      </div>
+
+      {/* 6. Word-by-word breakdown is within VerseViewer (clickable transliteration) */}
+
+      {/* 7. Commentary section */}
+      {commentaries.length > 0 && <CommentaryPanel commentaries={commentaries} />}
+
+      {/* 8. Flashcard quiz */}
       {words.length > 0 && <Flashcard words={words} />}
+
+      {/* Devanagari Trainer */}
       <DevanagariTrainer />
     </main>
   )

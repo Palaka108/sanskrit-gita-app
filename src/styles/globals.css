@@ -1,9 +1,61 @@
 /* ============================================
    Sanskrit Gita App — Global Styles
-   Version 0.2 — Modern-Ancient Aesthetic
+   Version 1.0 — Sacred Modern Redesign
+   Apple meets Ancient Manuscript meets Meditation
    ============================================ */
 
 @import './filigree-border.css';
+
+/* ---- Animated Background Gradient ---- */
+
+@keyframes sacredGlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lineReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softPulse {
+  0%, 100% { opacity: 0.04; }
+  50%      { opacity: 0.08; }
+}
+
+@keyframes flipIn {
+  0%   { transform: rotateY(90deg); opacity: 0; }
+  100% { transform: rotateY(0deg); opacity: 1; }
+}
+
+@keyframes slideUpModal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* ---- Reset ---- */
 
@@ -15,39 +67,47 @@
   padding: 0;
 }
 
-/* ---- Typography ---- */
+/* ---- Root & Background ---- */
 
 body {
-  font-family: 'Georgia', 'Palatino Linotype', 'Book Antiqua', serif;
-  color: #2a2520;
-  background: #f7f3ea;
+  font-family: 'Inter', -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  color: #1A1A1A;
+  background: linear-gradient(135deg, #F5EFE6, #EDE5D8, #F5EFE6, #F0E8DA);
+  background-size: 400% 400%;
+  animation: sacredGlow 20s ease infinite;
   line-height: 1.75;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---- Typography ---- */
+
 h1, h2, h3 {
-  font-family: 'Georgia', 'Palatino Linotype', serif;
-  color: #2a1f14;
+  font-family: 'Noto Serif Devanagari', Georgia, 'Palatino Linotype', serif;
+  color: #1F2A44;
   letter-spacing: 0.01em;
+  font-weight: 600;
 }
 
 p, td, li, span, button, a, select, label {
-  font-family: -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Keep Devanagari in serif */
+/* Devanagari text */
 .devanagari-block p,
 .chant-line,
-.trainer-devanagari {
-  font-family: 'Georgia', 'Palatino Linotype', 'Noto Serif Devanagari', serif;
+.trainer-devanagari,
+.modal-devanagari {
+  font-family: 'Noto Serif Devanagari', Georgia, 'Palatino Linotype', serif;
 }
 
-/* Keep transliteration in serif italic */
+/* Transliteration — italic serif */
 .transliteration-block,
 .chant-transliteration,
-.trainer-transliteration {
-  font-family: 'Georgia', 'Palatino Linotype', serif;
+.trainer-transliteration,
+.modal-transliteration {
+  font-family: 'Noto Serif Devanagari', Georgia, 'Palatino Linotype', serif;
   font-style: italic;
 }
 
@@ -57,77 +117,113 @@ p, td, li, span, button, a, select, label {
   padding: 2rem 1.5rem;
 }
 
-/* ---- Color Palette ----
-   Parchment: #f7f3ea
-   Deep text: #2a1f14
-   Warm brown: #8b7355
-   Muted gold: #c9a96e / #b8945a
-   Indigo accent: #3d4a6b
-   Sage green: #4a7c59
+/* ---- Color Palette Reference ----
+   Background:       #F5EFE6 (soft deep ivory)
+   Primary accent:   #1F2A44 (deep indigo)
+   Secondary accent: #C6A75E (warm gold)
+   Hover highlight:  #E8C98A (muted saffron glow)
+   Text:             #1A1A1A (charcoal)
+   Muted text:       #6B6B6B
+   Success:          #2D6A4F
+   Error:            #9B3B3B
    ---- */
+
+/* ---- Manuscript Ornament Separator ---- */
+
+.ornament-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  color: #C6A75E;
+  opacity: 0.5;
+}
+
+.ornament-separator::before,
+.ornament-separator::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #C6A75E, transparent);
+}
+
+.ornament-separator .ornament-symbol {
+  font-size: 1.2rem;
+  font-family: 'Noto Serif Devanagari', serif;
+  letter-spacing: 0.3em;
+}
 
 /* ---- Buttons ---- */
 
 .btn {
   display: inline-block;
-  padding: 0.65rem 1.5rem;
-  border: 1px solid #8b7355;
+  padding: 0.7rem 1.6rem;
+  border: 1.5px solid #C6A75E;
   background: #fff;
-  color: #5a4a3a;
+  color: #1F2A44;
   font-size: 0.92rem;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.02em;
 }
 
 .btn:hover {
-  background: #8b7355;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(139, 115, 85, 0.2);
+  background: #1F2A44;
+  color: #F5EFE6;
+  border-color: #1F2A44;
+  box-shadow: 0 4px 16px rgba(31, 42, 68, 0.18);
+  transform: translateY(-1px);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #8b7355 0%, #a0895f 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #1F2A44 0%, #2C3A5E 100%);
+  color: #F5EFE6;
   font-size: 1.05rem;
-  padding: 0.85rem 2.2rem;
+  padding: 0.9rem 2.4rem;
   border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #6e5a42 0%, #8b7355 100%);
+  background: linear-gradient(135deg, #162036 0%, #1F2A44 100%);
+  box-shadow: 0 6px 24px rgba(31, 42, 68, 0.25);
 }
 
 .btn-secondary {
   background: transparent;
-  color: #8b7355;
-  border: 1px solid #c9a96e;
+  color: #C6A75E;
+  border: 1.5px solid #C6A75E;
 }
 
 .btn-secondary:hover {
-  background: #8b7355;
-  color: #fff;
+  background: #C6A75E;
+  color: #1F2A44;
+  border-color: #C6A75E;
 }
 
 .btn-correct {
-  border-color: #4a7c59;
-  color: #4a7c59;
+  border-color: #2D6A4F;
+  color: #2D6A4F;
 }
 
 .btn-correct:hover {
-  background: #4a7c59;
+  background: #2D6A4F;
   color: #fff;
 }
 
 .btn-incorrect {
-  border-color: #a05050;
-  color: #a05050;
+  border-color: #9B3B3B;
+  color: #9B3B3B;
 }
 
 .btn-incorrect:hover {
-  background: #a05050;
+  background: #9B3B3B;
   color: #fff;
 }
 
@@ -135,19 +231,20 @@ p, td, li, span, button, a, select, label {
 
 .home-page {
   text-align: center;
-  padding-top: 5rem;
+  padding-top: 6rem;
   position: relative;
 }
 
 .home-lotus-wrap {
   position: absolute;
-  top: 2rem;
+  top: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 280px;
-  height: 280px;
-  color: #8b7355;
+  width: 300px;
+  height: 300px;
+  color: #C6A75E;
   pointer-events: none;
+  animation: softPulse 6s ease-in-out infinite;
 }
 
 .home-lotus-wrap .lotus-watermark {
@@ -156,28 +253,32 @@ p, td, li, span, button, a, select, label {
 }
 
 .home-page h1 {
-  font-size: 2.6rem;
-  color: #2a1f14;
-  margin-bottom: 0.6rem;
+  font-size: 2.8rem;
+  color: #1F2A44;
+  margin-bottom: 0.8rem;
   position: relative;
   z-index: 1;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .subtitle {
-  font-size: 1.02rem;
-  color: #7a6a58;
-  margin-bottom: 2.5rem;
+  font-size: 1.05rem;
+  color: #6B6B6B;
+  margin-bottom: 3rem;
   position: relative;
   z-index: 1;
+  letter-spacing: 0.03em;
+  animation: fadeInUp 0.8s ease-out 0.15s both;
 }
 
 .home-actions {
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem;
   justify-content: center;
   flex-wrap: wrap;
   position: relative;
   z-index: 1;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
 }
 
 /* ---- Verse Index Page ---- */
@@ -189,10 +290,11 @@ p, td, li, span, button, a, select, label {
 .verse-index-page h1 {
   font-size: 2rem;
   margin-bottom: 0.3rem;
+  color: #1F2A44;
 }
 
 .index-subtitle {
-  color: #7a6a58;
+  color: #6B6B6B;
   font-size: 0.92rem;
   margin-bottom: 1.5rem;
 }
@@ -202,10 +304,13 @@ p, td, li, span, button, a, select, label {
   flex-wrap: wrap;
   gap: 1.2rem;
   margin-bottom: 2rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
-  border: 1px solid rgba(180, 155, 110, 0.15);
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 14px;
+  border: 1px solid rgba(198, 167, 94, 0.15);
+  box-shadow: 0 2px 12px rgba(31, 42, 68, 0.04);
 }
 
 .filter-group {
@@ -215,10 +320,10 @@ p, td, li, span, button, a, select, label {
 }
 
 .filter-group label {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8b7355;
+  letter-spacing: 0.1em;
+  color: #C6A75E;
   font-weight: 600;
 }
 
@@ -228,46 +333,49 @@ p, td, li, span, button, a, select, label {
 }
 
 .pill {
-  padding: 0.35rem 0.85rem;
-  border: 1px solid #d5cfc5;
-  background: #fff;
-  color: #5a4a3a;
+  padding: 0.38rem 0.9rem;
+  border: 1px solid rgba(198, 167, 94, 0.3);
+  background: rgba(255, 255, 255, 0.6);
+  color: #1F2A44;
   font-size: 0.82rem;
+  font-weight: 500;
   border-radius: 20px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
 }
 
 .pill:hover {
-  border-color: #8b7355;
+  border-color: #C6A75E;
+  background: rgba(198, 167, 94, 0.08);
 }
 
 .pill.active {
-  background: #8b7355;
-  color: #fff;
-  border-color: #8b7355;
+  background: #1F2A44;
+  color: #F5EFE6;
+  border-color: #1F2A44;
 }
 
 .filter-select {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #d5cfc5;
-  border-radius: 6px;
-  background: #fff;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(198, 167, 94, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
   font-size: 0.85rem;
-  color: #5a4a3a;
+  color: #1F2A44;
   font-family: inherit;
 }
 
 .chapter-group {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .chapter-heading {
   font-size: 1.15rem;
-  color: #8b7355;
+  color: #C6A75E;
   margin-bottom: 0.8rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid rgba(180, 155, 110, 0.2);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(198, 167, 94, 0.25);
+  font-weight: 600;
 }
 
 .verse-grid {
@@ -282,42 +390,46 @@ p, td, li, span, button, a, select, label {
 }
 
 .verse-index-card {
-  padding: 1rem 1.2rem;
-  background: #fff;
-  border: 1px solid rgba(180, 155, 110, 0.2);
-  border-radius: 8px;
-  transition: box-shadow 0.2s, border-color 0.2s;
+  padding: 1.1rem 1.3rem;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(198, 167, 94, 0.15);
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .verse-index-card:hover {
-  box-shadow: 0 3px 12px rgba(139, 115, 85, 0.12);
-  border-color: #c9a96e;
+  box-shadow: 0 6px 24px rgba(31, 42, 68, 0.08);
+  border-color: #C6A75E;
+  transform: translateY(-2px);
 }
 
 .card-ref {
   display: block;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #2a1f14;
+  color: #1F2A44;
   margin-bottom: 0.25rem;
-  font-family: 'Georgia', serif;
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
 }
 
 .card-grammar {
   display: inline-block;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #8b7355;
-  background: rgba(201, 169, 110, 0.12);
-  padding: 0.15rem 0.5rem;
+  color: #C6A75E;
+  background: rgba(198, 167, 94, 0.1);
+  padding: 0.18rem 0.55rem;
   border-radius: 10px;
   margin-bottom: 0.4rem;
+  font-weight: 600;
 }
 
 .card-preview {
   font-size: 0.85rem;
-  color: #666;
+  color: #6B6B6B;
   line-height: 1.5;
 }
 
@@ -332,58 +444,129 @@ p, td, li, span, button, a, select, label {
 }
 
 .back-link {
-  display: inline-block;
-  color: #8b7355;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #C6A75E;
   text-decoration: none;
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
 .back-link:hover {
-  text-decoration: underline;
+  color: #1F2A44;
 }
 
 .loading,
 .error {
   text-align: center;
   padding: 3rem 0;
-  color: #7a6a58;
+  color: #6B6B6B;
+}
+
+/* ---- Section Spacing ---- */
+
+.verse-viewer,
+.chant-mode,
+.grammar-intro,
+.commentary-panel,
+.flashcard,
+.devanagari-trainer {
+  margin-bottom: 3rem;
 }
 
 /* ---- Verse Viewer ---- */
 
-.verse-viewer {
-  margin-bottom: 2.5rem;
-}
-
 .verse-viewer h2 {
-  font-size: 1.4rem;
-  color: #2a1f14;
+  font-size: 1.5rem;
+  color: #1F2A44;
   margin-bottom: 0.6rem;
   text-align: center;
 }
 
 .grammar-focus-badge {
   text-align: center;
-  margin-bottom: 1rem;
-  font-size: 0.78rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8b7355;
+  letter-spacing: 0.1em;
+  color: #C6A75E;
   font-weight: 600;
 }
 
+/* ---- Devanagari Hero Display ---- */
+
 .devanagari-block {
-  padding: 1.2rem 0;
+  padding: 1.5rem 0;
   text-align: center;
   background: transparent;
 }
 
 .devanagari-block p {
-  font-size: 1.65rem;
-  line-height: 2.3;
-  color: #2a1f14;
+  font-size: 1.75rem;
+  line-height: 2.4;
+  color: #1F2A44;
+  font-weight: 500;
 }
+
+/* Animated line reveal */
+.devanagari-block p:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
+.devanagari-block p:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
+.devanagari-block p:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
+.devanagari-block p:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
+.devanagari-block p:nth-child(5) { animation: lineReveal 0.6s ease-out 0.7s both; }
+.devanagari-block p:nth-child(6) { animation: lineReveal 0.6s ease-out 0.85s both; }
+
+/* Soft glow hover on Sanskrit words */
+.devanagari-block p {
+  transition: text-shadow 0.3s ease;
+  cursor: default;
+}
+
+.devanagari-block p:hover {
+  text-shadow: 0 0 20px rgba(198, 167, 94, 0.3), 0 0 40px rgba(198, 167, 94, 0.1);
+}
+
+/* ---- Layout Toggle ---- */
+
+.layout-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.layout-toggle button {
+  padding: 0.35rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1px solid rgba(198, 167, 94, 0.3);
+  background: rgba(255, 255, 255, 0.5);
+  color: #1F2A44;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.layout-toggle button.active {
+  background: #1F2A44;
+  color: #F5EFE6;
+  border-color: #1F2A44;
+}
+
+.layout-toggle button:hover:not(.active) {
+  border-color: #C6A75E;
+}
+
+/* Learning layout — word spaced */
+.devanagari-block.learning-layout p {
+  letter-spacing: 0.15em;
+  word-spacing: 0.4em;
+}
+
+/* ---- Transliteration ---- */
 
 .transliteration-block {
   padding: 0.8rem 0 1rem;
@@ -393,19 +576,23 @@ p, td, li, span, button, a, select, label {
 }
 
 .word-clickable {
-  color: #8b7355;
+  color: #C6A75E;
   cursor: pointer;
-  border-bottom: 1px dashed #c9a96e;
-  transition: color 0.15s, border-color 0.15s;
+  border-bottom: 1px dashed rgba(198, 167, 94, 0.5);
+  transition: all 0.2s;
+  border-radius: 2px;
+  padding: 0 2px;
 }
 
 .word-clickable:hover {
-  color: #5a4a3a;
-  border-color: #8b7355;
+  color: #1F2A44;
+  border-color: #1F2A44;
+  background: rgba(198, 167, 94, 0.08);
+  text-shadow: 0 0 12px rgba(198, 167, 94, 0.2);
 }
 
 .word-plain {
-  color: #2a2520;
+  color: #1A1A1A;
 }
 
 .line-break {
@@ -414,27 +601,32 @@ p, td, li, span, button, a, select, label {
 
 .translation-toggle {
   display: block;
-  margin: 1rem auto;
-  padding: 0.5rem 1.4rem;
-  border: 1px solid #d5cfc5;
-  background: #fff;
+  margin: 1.2rem auto;
+  padding: 0.55rem 1.5rem;
+  border: 1px solid rgba(198, 167, 94, 0.3);
+  background: rgba(255, 255, 255, 0.5);
   font-size: 0.88rem;
-  color: #5a4a3a;
-  border-radius: 6px;
+  font-weight: 500;
+  color: #1F2A44;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.2s;
 }
 
 .translation-toggle:hover {
-  background: #f0ece6;
+  background: rgba(198, 167, 94, 0.08);
+  border-color: #C6A75E;
 }
 
 .translation-block {
-  background: rgba(255, 255, 255, 0.6);
-  padding: 1.2rem;
-  border-radius: 8px;
-  border-left: 3px solid #c9a96e;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 1.3rem 1.5rem;
+  border-radius: 12px;
+  border-left: 3px solid #C6A75E;
   margin-top: 0.5rem;
+  animation: fadeInUp 0.4s ease-out;
 }
 
 .translation-block p {
@@ -448,46 +640,93 @@ p, td, li, span, button, a, select, label {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(42, 31, 20, 0.45);
+  background: rgba(31, 42, 68, 0.35);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   z-index: 100;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .modal-content {
-  background: #fdf9f2;
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 480px;
-  width: 92%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px 20px 0 0;
+  padding: 2rem 2rem 2.5rem;
+  max-width: 520px;
+  width: 100%;
   position: relative;
-  box-shadow: 0 12px 40px rgba(42, 31, 20, 0.2);
-  border: 1px solid rgba(201, 169, 110, 0.2);
+  box-shadow: 0 -8px 40px rgba(31, 42, 68, 0.15);
+  border: 1px solid rgba(198, 167, 94, 0.15);
+  border-bottom: none;
+  animation: slideUpModal 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modal handle bar */
+.modal-content::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 4px;
+  background: rgba(198, 167, 94, 0.3);
+  border-radius: 2px;
+  margin: 0 auto 1.2rem;
 }
 
 .modal-close {
   position: absolute;
-  top: 0.8rem;
-  right: 1rem;
+  top: 1rem;
+  right: 1.2rem;
   border: none;
-  background: none;
-  font-size: 1.5rem;
+  background: rgba(31, 42, 68, 0.06);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
   cursor: pointer;
-  color: #999;
+  color: #6B6B6B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
 }
 
 .modal-close:hover {
-  color: #333;
+  background: rgba(31, 42, 68, 0.12);
+  color: #1F2A44;
+}
+
+.modal-devanagari {
+  font-size: 2rem;
+  color: #1F2A44;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+
+.modal-transliteration {
+  font-size: 1.1rem;
+  color: #C6A75E;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .modal-content h3 {
-  font-size: 1.5rem;
-  color: #2a1f14;
-  margin-bottom: 1rem;
-  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  color: #1F2A44;
+  margin-bottom: 0.8rem;
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
   font-style: italic;
+  text-align: center;
+}
+
+.modal-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #C6A75E, transparent);
+  margin: 0 auto 1.2rem;
 }
 
 .grammar-table {
@@ -497,58 +736,187 @@ p, td, li, span, button, a, select, label {
 }
 
 .grammar-table td {
-  padding: 0.55rem 0.8rem;
-  border-bottom: 1px solid rgba(180, 155, 110, 0.15);
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid rgba(198, 167, 94, 0.1);
   font-size: 0.93rem;
 }
 
 .grammar-label {
   font-weight: 600;
-  color: #8b7355;
-  width: 110px;
-  font-size: 0.8rem;
+  color: #C6A75E;
+  width: 120px;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .grammar-note {
-  background: rgba(255, 255, 255, 0.5);
-  padding: 0.8rem 1rem;
-  border-radius: 6px;
+  background: rgba(245, 239, 230, 0.6);
+  padding: 0.9rem 1.1rem;
+  border-radius: 10px;
   font-size: 0.88rem;
-  color: #555;
+  color: #4a4a4a;
   line-height: 1.65;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.modal-explanation {
+  background: rgba(245, 239, 230, 0.6);
+  padding: 0.9rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: #4a4a4a;
+  line-height: 1.65;
+  margin-bottom: 0.8rem;
+}
+
+.modal-explanation .explanation-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #C6A75E;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
 }
 
 .spiritual-insight {
-  background: rgba(201, 169, 110, 0.08);
-  padding: 0.7rem 1rem;
-  border-radius: 6px;
-  border-left: 3px solid #c9a96e;
+  background: linear-gradient(135deg, rgba(198, 167, 94, 0.06), rgba(198, 167, 94, 0.12));
+  padding: 0.9rem 1.1rem;
+  border-radius: 10px;
+  border-left: 3px solid #C6A75E;
   font-size: 0.88rem;
-  color: #5a4a3a;
+  color: #1F2A44;
   line-height: 1.6;
   font-style: italic;
 }
 
-/* ---- Commentary Panel ---- */
-
-.commentary-panel {
-  margin-bottom: 2.5rem;
+.spiritual-insight .insight-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #C6A75E;
+  font-weight: 600;
+  font-style: normal;
+  margin-bottom: 0.3rem;
 }
 
+/* ---- Grammar Intro Section ---- */
+
+.grammar-intro {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.grammar-intro h3 {
+  font-size: 1.3rem;
+  color: #1F2A44;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.grammar-intro .intro-subtitle {
+  font-size: 0.88rem;
+  color: #6B6B6B;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.grammar-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+
+.grammar-intro-item {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(198, 167, 94, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+
+.grammar-intro-item:hover {
+  border-color: rgba(198, 167, 94, 0.3);
+  box-shadow: 0 2px 12px rgba(31, 42, 68, 0.04);
+}
+
+.grammar-intro-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  border: none;
+  background: transparent;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1F2A44;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.grammar-intro-header:hover {
+  background: rgba(198, 167, 94, 0.05);
+}
+
+.grammar-intro-header .term-sanskrit {
+  font-family: 'Noto Serif Devanagari', serif;
+  font-style: italic;
+  color: #C6A75E;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.grammar-intro-header .expand-icon {
+  color: #C6A75E;
+  font-size: 0.75rem;
+  transition: transform 0.2s;
+}
+
+.grammar-intro-header .expand-icon.open {
+  transform: rotate(180deg);
+}
+
+.grammar-intro-body {
+  padding: 0 1.2rem 1rem;
+  font-size: 0.88rem;
+  color: #4a4a4a;
+  line-height: 1.7;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.grammar-intro-body .verse-example {
+  margin-top: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(198, 167, 94, 0.06);
+  border-radius: 8px;
+  border-left: 2px solid #C6A75E;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #1F2A44;
+}
+
+/* ---- Commentary Panel ---- */
+
 .commentary-panel h3 {
-  font-size: 1.2rem;
-  color: #2a1f14;
+  font-size: 1.3rem;
+  color: #1F2A44;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .accordion-item {
-  border: 1px solid rgba(180, 155, 110, 0.2);
-  border-radius: 6px;
+  border: 1px solid rgba(198, 167, 94, 0.15);
+  border-radius: 12px;
   margin-bottom: 0.5rem;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .accordion-header {
@@ -556,36 +924,39 @@ p, td, li, span, button, a, select, label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1.1rem;
   border: none;
-  background: rgba(255, 255, 255, 0.4);
+  background: transparent;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #2a1f14;
+  color: #1F2A44;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s;
+  transition: background 0.2s;
+  font-family: inherit;
 }
 
 .accordion-header.open {
-  background: rgba(201, 169, 110, 0.1);
+  background: rgba(198, 167, 94, 0.06);
 }
 
 .accordion-header:hover {
-  background: rgba(201, 169, 110, 0.1);
+  background: rgba(198, 167, 94, 0.06);
 }
 
 .accordion-arrow {
   font-size: 0.75rem;
-  color: #999;
+  color: #C6A75E;
+  transition: transform 0.2s;
 }
 
 .accordion-body {
-  padding: 1rem;
+  padding: 1rem 1.1rem;
   font-size: 0.93rem;
-  color: #444;
+  color: #4a4a4a;
   line-height: 1.7;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  animation: fadeInUp 0.3s ease-out;
 }
 
 .key-phrases {
@@ -593,10 +964,10 @@ p, td, li, span, button, a, select, label {
 }
 
 .key-phrases strong {
-  color: #8b7355;
-  font-size: 0.8rem;
+  color: #C6A75E;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .key-phrases ul {
@@ -606,88 +977,115 @@ p, td, li, span, button, a, select, label {
 
 .key-phrases li {
   font-size: 0.85rem;
-  color: #666;
+  color: #6B6B6B;
   margin-bottom: 0.2rem;
 }
 
 /* ---- Chant Mode ---- */
 
 .chant-mode {
-  margin-bottom: 2.5rem;
   text-align: center;
 }
 
 .chant-mode h3 {
-  font-size: 1.2rem;
-  color: #2a1f14;
-  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  color: #1F2A44;
+  margin-bottom: 1.2rem;
 }
 
 .chant-display {
-  background: rgba(255, 255, 255, 0.4);
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid rgba(180, 155, 110, 0.15);
-  margin-bottom: 0.8rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(198, 167, 94, 0.15);
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 12px rgba(31, 42, 68, 0.04);
 }
 
 .chant-line {
-  font-size: 1.5rem;
-  line-height: 2;
-  color: #2a1f14;
+  font-size: 1.6rem;
+  line-height: 2.2;
+  color: #1F2A44;
+  font-weight: 500;
 }
+
+/* Chant line sequential reveal */
+.chant-line:nth-child(1) { animation: lineReveal 0.6s ease-out 0.1s both; }
+.chant-line:nth-child(2) { animation: lineReveal 0.6s ease-out 0.25s both; }
+.chant-line:nth-child(3) { animation: lineReveal 0.6s ease-out 0.4s both; }
+.chant-line:nth-child(4) { animation: lineReveal 0.6s ease-out 0.55s both; }
 
 .chant-transliteration {
   font-size: 1rem;
-  color: #7a6a58;
+  color: #6B6B6B;
   margin-bottom: 0.8rem;
 }
 
 .chant-placeholder {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #aaa;
+  font-style: italic;
 }
 
 /* ---- Flashcard ---- */
 
 .flashcard {
-  margin-bottom: 2.5rem;
   text-align: center;
 }
 
 .flashcard h3 {
-  font-size: 1.2rem;
-  color: #2a1f14;
+  font-size: 1.3rem;
+  color: #1F2A44;
   margin-bottom: 1rem;
 }
 
 .flashcard-card {
-  background: #fff;
-  border: 1px solid rgba(180, 155, 110, 0.2);
-  border-radius: 10px;
-  padding: 2rem;
-  min-height: 160px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(198, 167, 94, 0.15);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  box-shadow: 0 2px 10px rgba(139, 115, 85, 0.06);
+  gap: 1.2rem;
+  box-shadow: 0 4px 20px rgba(31, 42, 68, 0.06);
+  transition: all 0.3s;
+  perspective: 1000px;
+}
+
+.flashcard-card:hover {
+  box-shadow: 0 8px 30px rgba(31, 42, 68, 0.1);
 }
 
 .flashcard-prompt {
-  font-size: 1.1rem;
-  color: #2a1f14;
-  font-family: 'Georgia', serif;
+  font-size: 1.15rem;
+  color: #1F2A44;
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
+  font-weight: 500;
 }
 
 .flashcard-answer {
   font-size: 0.95rem;
-  color: #4a7c59;
+  color: #2D6A4F;
   font-style: italic;
-  padding: 0.6rem 1rem;
-  background: rgba(74, 124, 89, 0.06);
-  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  background: rgba(45, 106, 79, 0.06);
+  border-radius: 10px;
+  animation: flipIn 0.4s ease-out;
+}
+
+.flashcard-answer .why-matters {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: #C6A75E;
+  font-style: italic;
 }
 
 .flashcard-actions {
@@ -697,65 +1095,69 @@ p, td, li, span, button, a, select, label {
 
 .quiz-score {
   font-size: 1.3rem;
-  color: #2a1f14;
+  color: #1F2A44;
   margin-bottom: 1rem;
+  font-weight: 600;
 }
 
 /* ---- Devanagari Trainer ---- */
 
 .devanagari-trainer {
-  margin-bottom: 2.5rem;
   text-align: center;
 }
 
 .devanagari-trainer h3 {
-  font-size: 1.2rem;
-  color: #2a1f14;
+  font-size: 1.3rem;
+  color: #1F2A44;
   margin-bottom: 0.5rem;
 }
 
 .trainer-counter {
   font-size: 0.85rem;
-  color: #999;
+  color: #6B6B6B;
   margin-bottom: 1rem;
 }
 
 .trainer-card {
-  width: 140px;
-  height: 160px;
+  width: 150px;
+  height: 170px;
   margin: 0 auto 0.5rem;
-  background: #fff;
-  border: 2px solid rgba(180, 155, 110, 0.25);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(198, 167, 94, 0.2);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .trainer-card:hover {
-  border-color: #c9a96e;
-  box-shadow: 0 3px 12px rgba(139, 115, 85, 0.1);
+  border-color: #C6A75E;
+  box-shadow: 0 6px 20px rgba(31, 42, 68, 0.08);
+  transform: translateY(-2px);
 }
 
 .trainer-card.flipped {
-  background: #fdf9f2;
+  background: rgba(245, 239, 230, 0.7);
 }
 
 .trainer-devanagari {
   font-size: 3.5rem;
-  color: #2a1f14;
+  color: #1F2A44;
 }
 
 .trainer-transliteration {
   font-size: 1.6rem;
-  color: #8b7355;
+  color: #C6A75E;
+  font-weight: 500;
 }
 
 .trainer-hint {
   font-size: 0.8rem;
-  color: #bbb;
+  color: #aaa;
   margin-bottom: 0.8rem;
 }
 
@@ -767,8 +1169,9 @@ p, td, li, span, button, a, select, label {
 }
 
 .trainer-sound-placeholder {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #aaa;
+  font-style: italic;
 }
 
 /* ---- Responsive ---- */
@@ -779,16 +1182,16 @@ p, td, li, span, button, a, select, label {
   }
 
   .home-page {
-    padding-top: 3.5rem;
+    padding-top: 4rem;
   }
 
   .home-page h1 {
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
 
   .home-lotus-wrap {
-    width: 180px;
-    height: 180px;
+    width: 200px;
+    height: 200px;
   }
 
   .home-actions {
@@ -797,15 +1200,16 @@ p, td, li, span, button, a, select, label {
   }
 
   .devanagari-block p {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
   }
 
   .chant-line {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 
   .modal-content {
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 2rem;
+    border-radius: 16px 16px 0 0;
   }
 
   .verse-grid {
@@ -822,5 +1226,13 @@ p, td, li, span, button, a, select, label {
 
   .verse-index-page h1 {
     font-size: 1.6rem;
+  }
+
+  .flashcard-card {
+    padding: 1.8rem 1.2rem;
+  }
+
+  .chant-display {
+    padding: 1.2rem;
   }
 }

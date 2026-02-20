@@ -1,16 +1,23 @@
 /* ============================================
    Filigree Border — SVG Ornamental Frame
+   Version 1.0 — Sacred Modern Redesign
    ============================================ */
 
 .filigree-frame {
   position: relative;
-  padding: 2rem;
-  border: 1px solid rgba(180, 155, 110, 0.25);
-  border-radius: 12px;
-  background: linear-gradient(135deg, #fdf9f2 0%, #f7f3ea 50%, #fdf9f2 100%);
+  padding: 2.2rem;
+  border: 1px solid rgba(198, 167, 94, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(245, 239, 230, 0.6) 50%,
+    rgba(255, 255, 255, 0.5) 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   box-shadow:
-    0 4px 20px rgba(139, 115, 85, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    0 6px 30px rgba(31, 42, 68, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .filigree-corner {
@@ -18,6 +25,7 @@
   width: 60px;
   height: 60px;
   pointer-events: none;
+  opacity: 0.7;
 }
 
 .filigree-tl { top: -1px; left: -1px; }
@@ -40,9 +48,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
-  color: #8b7355;
+  width: 220px;
+  height: 220px;
+  color: #C6A75E;
   pointer-events: none;
   z-index: 0;
 }
@@ -56,11 +64,17 @@
 /* Scale filigree on mobile */
 @media (max-width: 600px) {
   .filigree-frame {
-    padding: 1.2rem;
+    padding: 1.4rem;
+    border-radius: 12px;
   }
 
   .filigree-corner {
     width: 40px;
     height: 40px;
+  }
+
+  .verse-card-inner .lotus-watermark {
+    width: 160px;
+    height: 160px;
   }
 }
