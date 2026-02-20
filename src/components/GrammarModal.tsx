@@ -48,6 +48,11 @@ export default function GrammarModal({ word, onClose }: GrammarModalProps) {
             <p>{word.grammar_note}</p>
           </div>
         )}
+        {word.spiritual_insight && (
+          <div className="spiritual-insight">
+            <p>{word.spiritual_insight}</p>
+          </div>
+        )}
       </div>
     </div>
   )

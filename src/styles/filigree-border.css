@@ -1,0 +1,66 @@
+/* ============================================
+   Filigree Border — SVG Ornamental Frame
+   ============================================ */
+
+.filigree-frame {
+  position: relative;
+  padding: 2rem;
+  border: 1px solid rgba(180, 155, 110, 0.25);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fdf9f2 0%, #f7f3ea 50%, #fdf9f2 100%);
+  box-shadow:
+    0 4px 20px rgba(139, 115, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.filigree-corner {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+}
+
+.filigree-tl { top: -1px; left: -1px; }
+.filigree-tr { top: -1px; right: -1px; }
+.filigree-bl { bottom: -1px; left: -1px; }
+.filigree-br { bottom: -1px; right: -1px; }
+
+.filigree-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Lotus watermark positioning inside verse card */
+.verse-card-inner {
+  position: relative;
+}
+
+.verse-card-inner .lotus-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  color: #8b7355;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.verse-card-inner .devanagari-block,
+.verse-card-inner .transliteration-block {
+  position: relative;
+  z-index: 1;
+}
+
+/* Scale filigree on mobile */
+@media (max-width: 600px) {
+  .filigree-frame {
+    padding: 1.2rem;
+  }
+
+  .filigree-corner {
+    width: 40px;
+    height: 40px;
+  }
+}

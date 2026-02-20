@@ -1,7 +1,11 @@
 /* ============================================
    Sanskrit Gita App — Global Styles
-   Version 0.1
+   Version 0.2 — Modern-Ancient Aesthetic
    ============================================ */
+
+@import './filigree-border.css';
+
+/* ---- Reset ---- */
 
 *,
 *::before,
@@ -11,50 +15,100 @@
   padding: 0;
 }
 
+/* ---- Typography ---- */
+
 body {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  color: #2c2c2c;
-  background: #faf8f5;
-  line-height: 1.7;
+  font-family: 'Georgia', 'Palatino Linotype', 'Book Antiqua', serif;
+  color: #2a2520;
+  background: #f7f3ea;
+  line-height: 1.75;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: 'Georgia', 'Palatino Linotype', serif;
+  color: #2a1f14;
+  letter-spacing: 0.01em;
+}
+
+p, td, li, span, button, a, select, label {
+  font-family: -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Keep Devanagari in serif */
+.devanagari-block p,
+.chant-line,
+.trainer-devanagari {
+  font-family: 'Georgia', 'Palatino Linotype', 'Noto Serif Devanagari', serif;
+}
+
+/* Keep transliteration in serif italic */
+.transliteration-block,
+.chant-transliteration,
+.trainer-transliteration {
+  font-family: 'Georgia', 'Palatino Linotype', serif;
+  font-style: italic;
 }
 
 #root {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
+
+/* ---- Color Palette ----
+   Parchment: #f7f3ea
+   Deep text: #2a1f14
+   Warm brown: #8b7355
+   Muted gold: #c9a96e / #b8945a
+   Indigo accent: #3d4a6b
+   Sage green: #4a7c59
+   ---- */
 
 /* ---- Buttons ---- */
 
 .btn {
   display: inline-block;
-  padding: 0.6rem 1.4rem;
+  padding: 0.65rem 1.5rem;
   border: 1px solid #8b7355;
   background: #fff;
   color: #5a4a3a;
-  font-family: inherit;
-  font-size: 0.95rem;
-  border-radius: 4px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
 .btn:hover {
   background: #8b7355;
   color: #fff;
+  box-shadow: 0 2px 8px rgba(139, 115, 85, 0.2);
 }
 
 .btn-primary {
-  background: #8b7355;
+  background: linear-gradient(135deg, #8b7355 0%, #a0895f 100%);
   color: #fff;
-  font-size: 1.1rem;
-  padding: 0.8rem 2rem;
+  font-size: 1.05rem;
+  padding: 0.85rem 2.2rem;
+  border: none;
 }
 
 .btn-primary:hover {
-  background: #6e5a42;
+  background: linear-gradient(135deg, #6e5a42 0%, #8b7355 100%);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #8b7355;
+  border: 1px solid #c9a96e;
+}
+
+.btn-secondary:hover {
+  background: #8b7355;
+  color: #fff;
 }
 
 .btn-correct {
@@ -81,25 +135,200 @@ body {
 
 .home-page {
   text-align: center;
-  padding-top: 6rem;
+  padding-top: 5rem;
+  position: relative;
+}
+
+.home-lotus-wrap {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 280px;
+  color: #8b7355;
+  pointer-events: none;
+}
+
+.home-lotus-wrap .lotus-watermark {
+  width: 100%;
+  height: 100%;
 }
 
 .home-page h1 {
-  font-size: 2.4rem;
-  color: #3b2f20;
-  margin-bottom: 0.5rem;
+  font-size: 2.6rem;
+  color: #2a1f14;
+  margin-bottom: 0.6rem;
+  position: relative;
+  z-index: 1;
 }
 
 .subtitle {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   color: #7a6a58;
   margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.home-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Verse Index Page ---- */
+
+.verse-index-page {
+  padding-top: 1rem;
+}
+
+.verse-index-page h1 {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.index-subtitle {
+  color: #7a6a58;
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  border: 1px solid rgba(180, 155, 110, 0.15);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.filter-group label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8b7355;
+  font-weight: 600;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.pill {
+  padding: 0.35rem 0.85rem;
+  border: 1px solid #d5cfc5;
+  background: #fff;
+  color: #5a4a3a;
+  font-size: 0.82rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pill:hover {
+  border-color: #8b7355;
+}
+
+.pill.active {
+  background: #8b7355;
+  color: #fff;
+  border-color: #8b7355;
+}
+
+.filter-select {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #d5cfc5;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.85rem;
+  color: #5a4a3a;
+  font-family: inherit;
+}
+
+.chapter-group {
+  margin-bottom: 2rem;
+}
+
+.chapter-heading {
+  font-size: 1.15rem;
+  color: #8b7355;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(180, 155, 110, 0.2);
+}
+
+.verse-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.8rem;
+}
+
+.verse-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.verse-index-card {
+  padding: 1rem 1.2rem;
+  background: #fff;
+  border: 1px solid rgba(180, 155, 110, 0.2);
+  border-radius: 8px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.verse-index-card:hover {
+  box-shadow: 0 3px 12px rgba(139, 115, 85, 0.12);
+  border-color: #c9a96e;
+}
+
+.card-ref {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2a1f14;
+  margin-bottom: 0.25rem;
+  font-family: 'Georgia', serif;
+}
+
+.card-grammar {
+  display: inline-block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8b7355;
+  background: rgba(201, 169, 110, 0.12);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  margin-bottom: 0.4rem;
+}
+
+.card-preview {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.5;
 }
 
 /* ---- Verse Page ---- */
 
 .verse-page {
   padding-top: 1rem;
+}
+
+.verse-nav {
+  margin-bottom: 1.5rem;
 }
 
 .back-link {
@@ -128,62 +357,72 @@ body {
 }
 
 .verse-viewer h2 {
-  font-size: 1.3rem;
-  color: #3b2f20;
-  margin-bottom: 1rem;
-}
-
-.devanagari-block {
-  background: #f0ece6;
-  padding: 1.5rem;
-  border-radius: 6px;
-  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  color: #2a1f14;
+  margin-bottom: 0.6rem;
   text-align: center;
 }
 
+.grammar-focus-badge {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8b7355;
+  font-weight: 600;
+}
+
+.devanagari-block {
+  padding: 1.2rem 0;
+  text-align: center;
+  background: transparent;
+}
+
 .devanagari-block p {
-  font-size: 1.6rem;
-  line-height: 2.2;
-  color: #3b2f20;
+  font-size: 1.65rem;
+  line-height: 2.3;
+  color: #2a1f14;
 }
 
 .transliteration-block {
-  padding: 1rem 0;
-  font-size: 1.15rem;
-  line-height: 2;
+  padding: 0.8rem 0 1rem;
+  font-size: 1.1rem;
+  line-height: 2.1;
   text-align: center;
 }
 
 .word-clickable {
   color: #8b7355;
   cursor: pointer;
-  border-bottom: 1px dashed #8b7355;
-  transition: color 0.15s;
+  border-bottom: 1px dashed #c9a96e;
+  transition: color 0.15s, border-color 0.15s;
 }
 
 .word-clickable:hover {
   color: #5a4a3a;
+  border-color: #8b7355;
 }
 
 .word-plain {
-  color: #2c2c2c;
+  color: #2a2520;
 }
 
 .line-break {
-  color: #bbb;
+  color: #ccc;
 }
 
 .translation-toggle {
   display: block;
   margin: 1rem auto;
-  padding: 0.5rem 1.2rem;
-  border: 1px solid #ccc;
+  padding: 0.5rem 1.4rem;
+  border: 1px solid #d5cfc5;
   background: #fff;
-  font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #5a4a3a;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .translation-toggle:hover {
@@ -191,16 +430,17 @@ body {
 }
 
 .translation-block {
-  background: #f7f5f0;
+  background: rgba(255, 255, 255, 0.6);
   padding: 1.2rem;
-  border-radius: 6px;
-  border-left: 3px solid #8b7355;
+  border-radius: 8px;
+  border-left: 3px solid #c9a96e;
   margin-top: 0.5rem;
 }
 
 .translation-block p {
   font-style: italic;
   color: #4a4a4a;
+  line-height: 1.7;
 }
 
 /* ---- Grammar Modal ---- */
@@ -208,21 +448,23 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(42, 31, 20, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  backdrop-filter: blur(2px);
 }
 
 .modal-content {
-  background: #fff;
-  border-radius: 8px;
+  background: #fdf9f2;
+  border-radius: 12px;
   padding: 2rem;
-  max-width: 460px;
-  width: 90%;
+  max-width: 480px;
+  width: 92%;
   position: relative;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(42, 31, 20, 0.2);
+  border: 1px solid rgba(201, 169, 110, 0.2);
 }
 
 .modal-close {
@@ -241,9 +483,11 @@ body {
 }
 
 .modal-content h3 {
-  font-size: 1.4rem;
-  color: #3b2f20;
+  font-size: 1.5rem;
+  color: #2a1f14;
   margin-bottom: 1rem;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .grammar-table {
@@ -253,24 +497,39 @@ body {
 }
 
 .grammar-table td {
-  padding: 0.5rem 0.8rem;
-  border-bottom: 1px solid #eee;
-  font-size: 0.95rem;
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid rgba(180, 155, 110, 0.15);
+  font-size: 0.93rem;
 }
 
 .grammar-label {
-  font-weight: bold;
-  color: #7a6a58;
-  width: 100px;
+  font-weight: 600;
+  color: #8b7355;
+  width: 110px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .grammar-note {
-  background: #f7f5f0;
+  background: rgba(255, 255, 255, 0.5);
   padding: 0.8rem 1rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
   color: #555;
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+}
+
+.spiritual-insight {
+  background: rgba(201, 169, 110, 0.08);
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  border-left: 3px solid #c9a96e;
+  font-size: 0.88rem;
+  color: #5a4a3a;
   line-height: 1.6;
+  font-style: italic;
 }
 
 /* ---- Commentary Panel ---- */
@@ -281,13 +540,13 @@ body {
 
 .commentary-panel h3 {
   font-size: 1.2rem;
-  color: #3b2f20;
+  color: #2a1f14;
   margin-bottom: 1rem;
 }
 
 .accordion-item {
-  border: 1px solid #e0dcd6;
-  border-radius: 4px;
+  border: 1px solid rgba(180, 155, 110, 0.2);
+  border-radius: 6px;
   margin-bottom: 0.5rem;
   overflow: hidden;
 }
@@ -299,20 +558,21 @@ body {
   align-items: center;
   padding: 0.8rem 1rem;
   border: none;
-  background: #f7f5f0;
-  font-family: inherit;
-  font-size: 1rem;
-  color: #3b2f20;
+  background: rgba(255, 255, 255, 0.4);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2a1f14;
   cursor: pointer;
   text-align: left;
+  transition: background 0.15s;
 }
 
 .accordion-header.open {
-  background: #ece8e0;
+  background: rgba(201, 169, 110, 0.1);
 }
 
 .accordion-header:hover {
-  background: #ece8e0;
+  background: rgba(201, 169, 110, 0.1);
 }
 
 .accordion-arrow {
@@ -322,9 +582,10 @@ body {
 
 .accordion-body {
   padding: 1rem;
-  font-size: 0.95rem;
+  font-size: 0.93rem;
   color: #444;
   line-height: 1.7;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .key-phrases {
@@ -332,8 +593,10 @@ body {
 }
 
 .key-phrases strong {
-  color: #7a6a58;
-  font-size: 0.85rem;
+  color: #8b7355;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .key-phrases ul {
@@ -342,7 +605,7 @@ body {
 }
 
 .key-phrases li {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: #666;
   margin-bottom: 0.2rem;
 }
@@ -356,27 +619,27 @@ body {
 
 .chant-mode h3 {
   font-size: 1.2rem;
-  color: #3b2f20;
+  color: #2a1f14;
   margin-bottom: 1rem;
 }
 
 .chant-display {
-  background: #f0ece6;
+  background: rgba(255, 255, 255, 0.4);
   padding: 1.5rem;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(180, 155, 110, 0.15);
   margin-bottom: 0.8rem;
 }
 
 .chant-line {
   font-size: 1.5rem;
   line-height: 2;
-  color: #3b2f20;
+  color: #2a1f14;
 }
 
 .chant-transliteration {
   font-size: 1rem;
   color: #7a6a58;
-  font-style: italic;
   margin-bottom: 0.8rem;
 }
 
@@ -394,14 +657,14 @@ body {
 
 .flashcard h3 {
   font-size: 1.2rem;
-  color: #3b2f20;
+  color: #2a1f14;
   margin-bottom: 1rem;
 }
 
 .flashcard-card {
   background: #fff;
-  border: 1px solid #e0dcd6;
-  border-radius: 8px;
+  border: 1px solid rgba(180, 155, 110, 0.2);
+  border-radius: 10px;
   padding: 2rem;
   min-height: 160px;
   display: flex;
@@ -409,20 +672,22 @@ body {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  box-shadow: 0 2px 10px rgba(139, 115, 85, 0.06);
 }
 
 .flashcard-prompt {
   font-size: 1.1rem;
-  color: #3b2f20;
+  color: #2a1f14;
+  font-family: 'Georgia', serif;
 }
 
 .flashcard-answer {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #4a7c59;
   font-style: italic;
   padding: 0.6rem 1rem;
-  background: #f0f7f2;
-  border-radius: 4px;
+  background: rgba(74, 124, 89, 0.06);
+  border-radius: 6px;
 }
 
 .flashcard-actions {
@@ -432,7 +697,7 @@ body {
 
 .quiz-score {
   font-size: 1.3rem;
-  color: #3b2f20;
+  color: #2a1f14;
   margin-bottom: 1rem;
 }
 
@@ -445,7 +710,7 @@ body {
 
 .devanagari-trainer h3 {
   font-size: 1.2rem;
-  color: #3b2f20;
+  color: #2a1f14;
   margin-bottom: 0.5rem;
 }
 
@@ -460,33 +725,32 @@ body {
   height: 160px;
   margin: 0 auto 0.5rem;
   background: #fff;
-  border: 2px solid #e0dcd6;
-  border-radius: 8px;
+  border: 2px solid rgba(180, 155, 110, 0.25);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .trainer-card:hover {
-  border-color: #8b7355;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border-color: #c9a96e;
+  box-shadow: 0 3px 12px rgba(139, 115, 85, 0.1);
 }
 
 .trainer-card.flipped {
-  background: #f7f5f0;
+  background: #fdf9f2;
 }
 
 .trainer-devanagari {
   font-size: 3.5rem;
-  color: #3b2f20;
+  color: #2a1f14;
 }
 
 .trainer-transliteration {
   font-size: 1.6rem;
   color: #8b7355;
-  font-style: italic;
 }
 
 .trainer-hint {
@@ -515,11 +779,21 @@ body {
   }
 
   .home-page {
-    padding-top: 3rem;
+    padding-top: 3.5rem;
   }
 
   .home-page h1 {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
+  }
+
+  .home-lotus-wrap {
+    width: 180px;
+    height: 180px;
+  }
+
+  .home-actions {
+    flex-direction: column;
+    align-items: center;
   }
 
   .devanagari-block p {
@@ -532,5 +806,21 @@ body {
 
   .modal-content {
     padding: 1.5rem;
+  }
+
+  .verse-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+  }
+
+  .filter-pills {
+    flex-wrap: wrap;
+  }
+
+  .verse-index-page h1 {
+    font-size: 1.6rem;
   }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import type { Verse } from '../types/verse'
 import type { Word } from '../types/grammar'
@@ -13,6 +13,9 @@ import DevanagariTrainer from '../components/DevanagariTrainer'
 
 export default function VersePage() {
   const { chapter, verse: verseNum } = useParams<{ chapter: string; verse: string }>()
+  const [searchParams] = useSearchParams()
+  const sourceHint = searchParams.get('source')
+
   const [verse, setVerse] = useState<Verse | null>(null)
   const [words, setWords] = useState<Word[]>([])
   const [commentaries, setCommentaries] = useState<Commentary[]>([])
@@ -24,13 +27,19 @@ export default function VersePage() {
     async function fetchData() {
       setLoading(true)
       setError(null)
+      setSelectedWord(null)
 
-      const { data: verseData, error: verseError } = await supabase
+      let query = supabase
         .from('verses')
         .select('*')
         .eq('chapter', Number(chapter))
         .eq('verse', Number(verseNum))
-        .single()
+
+      if (sourceHint) {
+        query = query.eq('source_text', sourceHint)
+      }
+
+      const { data: verseData, error: verseError } = await query.limit(1).single()
 
       if (verseError || !verseData) {
         setError('Verse not found.')
@@ -52,7 +61,7 @@ export default function VersePage() {
     }
 
     fetchData()
-  }, [chapter, verseNum])
+  }, [chapter, verseNum, sourceHint])
 
   if (loading) {
     return <main className="verse-page"><p className="loading">Loading verse...</p></main>
@@ -62,14 +71,16 @@ export default function VersePage() {
     return (
       <main className="verse-page">
         <p className="error">{error || 'Something went wrong.'}</p>
-        <Link to="/" className="btn">Back to Home</Link>
+        <Link to="/verses" className="btn">Browse Verses</Link>
       </main>
     )
   }
 
   return (
     <main className="verse-page">
-      <Link to="/" className="back-link">Back to Home</Link>
+      <nav className="verse-nav">
+        <Link to="/verses" className="back-link">&larr; All Verses</Link>
+      </nav>
 
       <VerseViewer verse={verse} words={words} onWordClick={setSelectedWord} />
 
@@ -77,9 +88,9 @@ export default function VersePage() {
         <GrammarModal word={selectedWord} onClose={() => setSelectedWord(null)} />
       )}
 
-      <CommentaryPanel commentaries={commentaries} />
+      {commentaries.length > 0 && <CommentaryPanel commentaries={commentaries} />}
       <ChantMode verse={verse} />
-      <Flashcard words={words} />
+      {words.length > 0 && <Flashcard words={words} />}
       <DevanagariTrainer />
     </main>
   )
