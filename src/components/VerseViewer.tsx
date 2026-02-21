@@ -91,7 +91,7 @@ export default function VerseViewer({ verse, words, onWordClick }: VerseViewerPr
 
       {/* ---- 4. WORD-BY-WORD interactive breakdown ---- */}
       {words.length > 0 && (
-        <div className="word-breakdown-section">
+        <div id="section-word-by-word" className="word-breakdown-section">
           <h3>Word-by-Word Breakdown</h3>
           <p className="section-hint">Tap any word to see grammar details</p>
           <div className="word-grid">

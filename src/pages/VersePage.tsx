@@ -10,6 +10,7 @@ import AudioButtons from '../components/AudioButtons'
 import GrammarIntroSection from '../components/GrammarIntroSection'
 import CommentaryPanel from '../components/CommentaryPanel'
 import Flashcard from '../components/Flashcard'
+import VerseNav from '../components/VerseNav'
 
 export default function VersePage() {
   const { chapter, verse: verseNum } = useParams<{ chapter: string; verse: string }>()
@@ -94,7 +95,10 @@ export default function VersePage() {
         <div className="water-glow"></div>
       </div>
 
-      {/* 1. GITA VIBE — first thing at the top */}
+      {/* Section navigation — Home + jump to sections */}
+      <VerseNav hasWords={words.length > 0} hasCommentaries={commentaries.length > 0} />
+
+      {/* 1. GITA VIBE — audio player */}
       <AudioButtons verseId={verse.id} chapter={verse.chapter} verse={verse.verse} />
 
       {/* 2. Verse content: transliteration, translation, devanagari dropdown, word breakdown */}
@@ -106,7 +110,9 @@ export default function VersePage() {
       )}
 
       {/* 3. Grammar Focus section */}
-      <GrammarIntroSection />
+      <div id="section-grammar">
+        <GrammarIntroSection />
+      </div>
 
       {/* Ornament separator */}
       <div className="ornament-separator">
@@ -114,10 +120,18 @@ export default function VersePage() {
       </div>
 
       {/* 4. Commentary section */}
-      {commentaries.length > 0 && <CommentaryPanel commentaries={commentaries} />}
+      {commentaries.length > 0 && (
+        <div id="section-acaryas">
+          <CommentaryPanel commentaries={commentaries} />
+        </div>
+      )}
 
-      {/* Flashcard quiz (bonus) */}
-      {words.length > 0 && <Flashcard words={words} />}
+      {/* Flashcard quiz */}
+      {words.length > 0 && (
+        <div id="section-flashcard">
+          <Flashcard words={words} />
+        </div>
+      )}
     </main>
   )
 }

@@ -203,14 +203,14 @@ p, td, li, span, button, a, select, label {
 /* ---- Glass Card ---- */
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(198, 167, 94, 0.1);
+  background: rgba(11, 15, 26, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(198, 167, 94, 0.14);
   border-radius: 18px;
   padding: 1.5rem;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
 
 .glass-card:hover {
@@ -653,6 +653,71 @@ p, td, li, span, button, a, select, label {
   line-height: 1.5;
 }
 
+/* ---- Verse Section Navigation ---- */
+
+.verse-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: center;
+  padding: 0.8rem 0.6rem;
+  margin-bottom: 1.2rem;
+  background: rgba(11, 15, 26, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(198, 167, 94, 0.12);
+  border-radius: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.verse-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.03em;
+  color: #BDB4A6;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(198, 167, 94, 0.1);
+  border-radius: 22px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.verse-nav-btn svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.verse-nav-btn:hover {
+  color: #F0E6D0;
+  background: rgba(198, 167, 94, 0.1);
+  border-color: rgba(198, 167, 94, 0.3);
+  box-shadow: 0 2px 12px rgba(198, 167, 94, 0.08);
+  transform: translateY(-1px);
+}
+
+.verse-nav-btn:hover svg {
+  opacity: 1;
+}
+
+.verse-nav-home {
+  color: #C6A75E;
+  border-color: rgba(198, 167, 94, 0.2);
+}
+
+.verse-nav-home:hover {
+  color: #D4B96E;
+  background: rgba(198, 167, 94, 0.12);
+  border-color: rgba(198, 167, 94, 0.4);
+}
+
 /* ---- Verse Page ---- */
 
 .verse-page {
@@ -753,11 +818,13 @@ p, td, li, span, button, a, select, label {
 }
 
 .hero-translit {
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   line-height: 2.4;
   text-align: center;
   font-style: italic;
-  color: #F0E6D0;
+  color: #F5EDE0;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-translit .translit-line {
@@ -800,16 +867,20 @@ p, td, li, span, button, a, select, label {
 }
 
 .word-plain {
-  color: #E8E0D4;
+  color: #F0E8DC;
+  font-weight: 600;
 }
 
 /* ---- Translation (always visible) ---- */
 
 .translation-block.always-visible {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(11, 15, 26, 0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   padding: 1.3rem 1.5rem;
   border-radius: 12px;
   border-left: none;
+  border: 1px solid rgba(198, 167, 94, 0.08);
   margin-bottom: 1.5rem;
   animation: fadeIn 0.6s ease-out 0.3s both;
   text-align: center;
@@ -817,9 +888,10 @@ p, td, li, span, button, a, select, label {
 
 .translation-block.always-visible p {
   font-style: italic;
-  color: #BDB4A6;
+  color: #D4CCC0;
   line-height: 1.7;
   font-size: 1.05rem;
+  font-weight: 500;
 }
 
 /* ---- Devanagari Section ---- */
@@ -855,7 +927,9 @@ p, td, li, span, button, a, select, label {
   border: 1px solid rgba(198, 167, 94, 0.12);
   border-radius: 14px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(11, 15, 26, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .devanagari-dropdown-toggle {
@@ -920,8 +994,8 @@ p, td, li, span, button, a, select, label {
 
 .section-hint {
   text-align: center;
-  font-size: 0.82rem;
-  color: #9A9188;
+  font-size: 0.84rem;
+  color: #ADA59A;
   margin-bottom: 1rem;
 }
 
@@ -938,8 +1012,10 @@ p, td, li, span, button, a, select, label {
   align-items: center;
   gap: 0.2rem;
   padding: 0.6rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(198, 167, 94, 0.12);
+  background: rgba(11, 15, 26, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(198, 167, 94, 0.14);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
@@ -1077,8 +1153,8 @@ p, td, li, span, button, a, select, label {
   gap: 0.6rem;
   margin-top: 0.6rem;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(11, 15, 26, 0.45);
+  border: 1px solid rgba(198, 167, 94, 0.08);
   border-radius: 10px;
 }
 
@@ -1329,8 +1405,10 @@ p, td, li, span, button, a, select, label {
 }
 
 .grammar-intro-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(198, 167, 94, 0.08);
+  background: rgba(11, 15, 26, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(198, 167, 94, 0.1);
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.25s;
@@ -1382,8 +1460,8 @@ p, td, li, span, button, a, select, label {
 
 .grammar-intro-body {
   padding: 0 1.2rem 1rem;
-  font-size: 0.88rem;
-  color: #BDB4A6;
+  font-size: 0.9rem;
+  color: #D0C8BA;
   line-height: 1.7;
   animation: fadeIn 0.3s ease-out;
 }
@@ -1409,11 +1487,13 @@ p, td, li, span, button, a, select, label {
 }
 
 .accordion-item {
-  border: 1px solid rgba(198, 167, 94, 0.08);
+  border: 1px solid rgba(198, 167, 94, 0.1);
   border-radius: 12px;
   margin-bottom: 0.5rem;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(11, 15, 26, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .accordion-header {
@@ -1450,7 +1530,7 @@ p, td, li, span, button, a, select, label {
 .accordion-body {
   padding: 1rem 1.1rem;
   font-size: 0.93rem;
-  color: #BDB4A6;
+  color: #D0C8BA;
   line-height: 1.7;
   animation: fadeIn 0.3s ease-out;
 }
@@ -1490,10 +1570,10 @@ p, td, li, span, button, a, select, label {
 }
 
 .flashcard-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(198, 167, 94, 0.1);
+  background: rgba(11, 15, 26, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(198, 167, 94, 0.12);
   border-radius: 16px;
   padding: 2.5rem 2rem;
   min-height: 180px;
@@ -2010,6 +2090,21 @@ p, td, li, span, button, a, select, label {
 
   .audio-buttons {
     flex-direction: column;
+  }
+
+  .verse-nav {
+    gap: 0.35rem;
+    padding: 0.6rem 0.5rem;
+  }
+
+  .verse-nav-btn {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.72rem;
+  }
+
+  .verse-nav-btn svg {
+    width: 14px;
+    height: 14px;
   }
 
   .conj-table td,
