@@ -90,7 +90,7 @@ export default function VersePage() {
       )}
 
       {/* 3. Traditional Audio + 4. Gita Vibe Audio */}
-      <AudioButtons verseId={verse.id} />
+      <AudioButtons verseId={verse.id} chapter={verse.chapter} verse={verse.verse} />
 
       {/* 5. Sanskrit Devanagari — inside VerseViewer above */}
       {/* 6. Word-by-word breakdown — inside VerseViewer above */}

@@ -937,6 +937,74 @@ p, td, li, span, button, a, select, label {
 .audio-wave span:nth-child(3) { animation-delay: 0.3s; }
 .audio-wave span:nth-child(4) { animation-delay: 0.45s; }
 
+/* ---- Audio Volume Controls ---- */
+
+.audio-volume-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+.audio-mute-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.audio-mute-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(212, 185, 110, 0.4);
+}
+
+.audio-volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.audio-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #D4B96E;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.audio-volume-slider::-webkit-slider-thumb:hover {
+  background: #e8cc7a;
+}
+
+.audio-volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #D4B96E;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 /* ---- Grammar Modal ---- */
 
 .modal-overlay {
