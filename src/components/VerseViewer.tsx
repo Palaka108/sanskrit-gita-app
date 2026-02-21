@@ -57,13 +57,7 @@ export default function VerseViewer({ verse, words, onWordClick }: VerseViewerPr
     <section className="verse-viewer fade-in">
       <h2 className="verse-label">{verseLabel(verse)}</h2>
 
-      {verse.grammar_focus && (
-        <div className="grammar-focus-badge">
-          Grammar Focus: {verse.grammar_focus}
-        </div>
-      )}
-
-      {/* ---- 1. ROMAN TRANSLITERATION (hero, 4 lines) ---- */}
+      {/* ---- 1. ROMAN TRANSLITERATION (hero, 4 centered lines) ---- */}
       <div className="glass-card verse-hero-card">
         <div className="transliteration-block hero-translit">
           {translitLines.map((line, i) => renderTranslitLine(line, i))}

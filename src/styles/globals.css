@@ -676,33 +676,47 @@ p, td, li, span, button, a, select, label {
 
 .water-wave {
   position: absolute;
-  width: 250%;
-  height: 100%;
-  opacity: 0.035;
-  border-radius: 45%;
+  width: 300%;
+  border-radius: 42%;
 }
 
 .water-wave-1 {
-  bottom: -60%;
-  left: 0;
-  background: radial-gradient(ellipse at 50% 80%, rgba(100, 160, 200, 0.8) 0%, transparent 60%);
-  animation: waterDrift 12s ease-in-out infinite;
+  bottom: -10%;
+  left: -50%;
+  height: 45%;
+  background: linear-gradient(
+    180deg,
+    rgba(60, 130, 180, 0.12) 0%,
+    rgba(40, 100, 160, 0.06) 50%,
+    transparent 100%
+  );
+  animation: waterDrift 10s ease-in-out infinite;
 }
 
 .water-wave-2 {
-  bottom: -65%;
-  left: 0;
-  background: radial-gradient(ellipse at 40% 75%, rgba(80, 140, 190, 0.6) 0%, transparent 55%);
-  animation: waterDrift2 16s ease-in-out infinite;
-  opacity: 0.025;
+  bottom: -15%;
+  left: -60%;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    rgba(80, 150, 200, 0.09) 0%,
+    rgba(50, 120, 170, 0.04) 50%,
+    transparent 100%
+  );
+  animation: waterDrift2 14s ease-in-out infinite;
 }
 
 .water-wave-3 {
-  bottom: -55%;
-  left: 0;
-  background: radial-gradient(ellipse at 60% 85%, rgba(120, 170, 210, 0.5) 0%, transparent 50%);
-  animation: waterDrift3 20s ease-in-out infinite;
-  opacity: 0.02;
+  bottom: -5%;
+  left: -40%;
+  height: 35%;
+  background: linear-gradient(
+    180deg,
+    rgba(100, 170, 220, 0.07) 0%,
+    rgba(70, 140, 190, 0.03) 50%,
+    transparent 100%
+  );
+  animation: waterDrift3 18s ease-in-out infinite;
 }
 
 .verse-page > *:not(.water-bg) {
@@ -811,16 +825,17 @@ p, td, li, span, button, a, select, label {
   background: rgba(255, 255, 255, 0.03);
   padding: 1.3rem 1.5rem;
   border-radius: 12px;
-  border-left: 3px solid rgba(198, 167, 94, 0.4);
+  border-left: none;
   margin-bottom: 1.5rem;
   animation: fadeIn 0.6s ease-out 0.3s both;
+  text-align: center;
 }
 
 .translation-block.always-visible p {
   font-style: italic;
   color: #BDB4A6;
   line-height: 1.7;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 /* ---- Devanagari Section ---- */
