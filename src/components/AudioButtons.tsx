@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 interface AudioButtonsProps {
   verseId: string
@@ -7,60 +7,69 @@ interface AudioButtonsProps {
 }
 
 /**
- * Two large audio buttons per verse:
- *   1. Traditional Chant
- *   2. Gita Vibe — Trap Trance
+ * Two audio buttons per verse:
+ *   1. Traditional Chant (placeholder)
+ *   2. Gita Vibe — loads from public/audio/{chapter}_{verse}.mp3
  *
- * Gita Vibe loads from public/audio/{chapter}_{verse}.mp3
- * Traditional Chant placeholder until Supabase storage URLs added.
+ * Gita Vibe autoplays on mount if available.
  */
 export default function AudioButtons({ verseId, chapter, verse }: AudioButtonsProps) {
   const [playingTraditional, setPlayingTraditional] = useState(false)
   const [playingVibe, setPlayingVibe] = useState(false)
   const [vibeAvailable, setVibeAvailable] = useState(false)
+  const [vibeChecked, setVibeChecked] = useState(false)
   const [muted, setMuted] = useState(false)
   const [volume, setVolume] = useState(0.7)
   const traditionalRef = useRef<HTMLAudioElement | null>(null)
   const vibeRef = useRef<HTMLAudioElement | null>(null)
 
-  // Build local file path for Gita Vibe audio
   const vibeSrc = `/audio/${chapter}_${verse}.mp3`
-
-  // Placeholder: replace with Supabase storage URLs when audio is uploaded
   const traditionalSrc = ''
 
-  // Check if vibe audio exists and autoplay it
+  // Probe whether the vibe mp3 exists using fetch HEAD, then autoplay
   useEffect(() => {
-    const audio = vibeRef.current
-    if (!audio) return
+    let cancelled = false
+    setVibeAvailable(false)
+    setVibeChecked(false)
+    setPlayingVibe(false)
 
-    audio.volume = volume
-    audio.muted = muted
-
-    const onCanPlay = () => {
-      setVibeAvailable(true)
-      // Autoplay the Gita Vibe when entering the verse
-      audio.play()
-        .then(() => setPlayingVibe(true))
-        .catch(() => setPlayingVibe(false))
-    }
-
-    const onError = () => {
-      setVibeAvailable(false)
-    }
-
-    audio.addEventListener('canplaythrough', onCanPlay)
-    audio.addEventListener('error', onError)
-    audio.load()
+    fetch(vibeSrc, { method: 'HEAD' })
+      .then(res => {
+        if (cancelled) return
+        if (res.ok) {
+          setVibeAvailable(true)
+          setVibeChecked(true)
+          // Autoplay after a tiny delay so the audio element has the src
+          setTimeout(() => {
+            const audio = vibeRef.current
+            if (!audio || cancelled) return
+            audio.src = vibeSrc
+            audio.volume = volume
+            audio.muted = muted
+            audio.load()
+            audio.play()
+              .then(() => { if (!cancelled) setPlayingVibe(true) })
+              .catch(() => { if (!cancelled) setPlayingVibe(false) })
+          }, 50)
+        } else {
+          setVibeAvailable(false)
+          setVibeChecked(true)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setVibeAvailable(false)
+          setVibeChecked(true)
+        }
+      })
 
     return () => {
-      audio.removeEventListener('canplaythrough', onCanPlay)
-      audio.removeEventListener('error', onError)
-      audio.pause()
+      cancelled = true
+      vibeRef.current?.pause()
     }
-  }, [chapter, verse])
+  }, [chapter, verse, vibeSrc])
 
-  // Sync volume
+  // Sync volume to both audio elements
   useEffect(() => {
     if (vibeRef.current) vibeRef.current.volume = volume
     if (traditionalRef.current) traditionalRef.current.volume = volume
@@ -87,16 +96,26 @@ export default function AudioButtons({ verseId, chapter, verse }: AudioButtonsPr
   }
 
   function toggleVibe() {
+    const audio = vibeRef.current
+    if (!audio) return
     if (playingVibe) {
-      vibeRef.current?.pause()
+      audio.pause()
       setPlayingVibe(false)
     } else {
       if (playingTraditional) {
         traditionalRef.current?.pause()
         setPlayingTraditional(false)
       }
-      vibeRef.current?.play().catch(() => {})
-      setPlayingVibe(true)
+      // Make sure src is set
+      if (!audio.src || audio.src === window.location.href) {
+        audio.src = vibeSrc
+        audio.load()
+      }
+      audio.volume = volume
+      audio.muted = muted
+      audio.play()
+        .then(() => setPlayingVibe(true))
+        .catch(() => setPlayingVibe(false))
     }
   }
 
@@ -106,8 +125,6 @@ export default function AudioButtons({ verseId, chapter, verse }: AudioButtonsPr
   }
 
   const toggleMute = () => setMuted(m => !m)
-
-  const isAnyPlaying = playingTraditional || playingVibe
 
   return (
     <div className="audio-buttons">
@@ -152,12 +169,12 @@ export default function AudioButtons({ verseId, chapter, verse }: AudioButtonsPr
             </svg>
           )}
         </span>
-        <span className="audio-label">Gita Vibe — Trap Trance</span>
+        <span className="audio-label">Gita Vibe</span>
         {playingVibe && <span className="audio-wave"><span></span><span></span><span></span><span></span></span>}
-        {!vibeAvailable && <span className="audio-soon">Coming Soon</span>}
+        {vibeChecked && !vibeAvailable && <span className="audio-soon">Coming Soon</span>}
       </button>
 
-      {/* Volume controls — shown when any audio is available */}
+      {/* Volume controls */}
       {(vibeAvailable || traditionalSrc) && (
         <div className="audio-volume-row">
           <button
@@ -195,9 +212,9 @@ export default function AudioButtons({ verseId, chapter, verse }: AudioButtonsPr
       />
       <audio
         ref={vibeRef}
-        key={vibeSrc}
-        src={vibeSrc}
         onEnded={() => handleEnded('vibe')}
+        onPause={() => setPlayingVibe(false)}
+        onPlay={() => setPlayingVibe(true)}
         preload="auto"
       />
     </div>
