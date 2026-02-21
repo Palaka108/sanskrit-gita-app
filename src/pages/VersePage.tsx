@@ -77,11 +77,21 @@ export default function VersePage() {
 
   return (
     <main className="verse-page">
-      {/* Calm water background */}
+      {/* Video water background — same approach as QualiaVibe */}
       <div className="water-bg" aria-hidden="true">
-        <div className="water-wave water-wave-1"></div>
-        <div className="water-wave water-wave-2"></div>
-        <div className="water-wave water-wave-3"></div>
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="water-video"
+        >
+          <source src="/videos/meditation-intro.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay to keep text readable */}
+        <div className="water-overlay"></div>
+        {/* Subtle warm glow center */}
+        <div className="water-glow"></div>
       </div>
 
       {/* 1. GITA VIBE — first thing at the top */}
