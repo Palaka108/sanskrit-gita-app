@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 interface AudioButtonsProps {
   verseId: string
@@ -13,7 +13,7 @@ interface AudioButtonsProps {
  *
  * Gita Vibe autoplays on mount if available.
  */
-export default function AudioButtons({ verseId, chapter, verse }: AudioButtonsProps) {
+export default function AudioButtons({ verseId: _verseId, chapter, verse }: AudioButtonsProps) {
   const [playingTraditional, setPlayingTraditional] = useState(false)
   const [playingVibe, setPlayingVibe] = useState(false)
   const [vibeAvailable, setVibeAvailable] = useState(false)
