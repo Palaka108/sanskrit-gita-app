@@ -77,11 +77,17 @@ export default function VersePage() {
 
   return (
     <main className="verse-page">
-      {/*
-        NEW LAYOUT ORDER (Sections 1-8):
-        1. Roman Transliteration (4 lines) — inside VerseViewer
-        2. English Translation — inside VerseViewer (always visible)
-      */}
+      {/* Calm water background */}
+      <div className="water-bg" aria-hidden="true">
+        <div className="water-wave water-wave-1"></div>
+        <div className="water-wave water-wave-2"></div>
+        <div className="water-wave water-wave-3"></div>
+      </div>
+
+      {/* 1. GITA VIBE — first thing at the top */}
+      <AudioButtons verseId={verse.id} chapter={verse.chapter} verse={verse.verse} />
+
+      {/* 2. Verse content: transliteration, translation, devanagari dropdown, word breakdown */}
       <VerseViewer verse={verse} words={words} onWordClick={setSelectedWord} />
 
       {/* Grammar modal (overlay) */}
@@ -89,13 +95,7 @@ export default function VersePage() {
         <GrammarModal word={selectedWord} onClose={() => setSelectedWord(null)} />
       )}
 
-      {/* 3. Traditional Audio + 4. Gita Vibe Audio */}
-      <AudioButtons verseId={verse.id} chapter={verse.chapter} verse={verse.verse} />
-
-      {/* 5. Sanskrit Devanagari — inside VerseViewer above */}
-      {/* 6. Word-by-word breakdown — inside VerseViewer above */}
-
-      {/* 7. Grammar Focus section */}
+      {/* 3. Grammar Focus section */}
       <GrammarIntroSection />
 
       {/* Ornament separator */}
@@ -103,13 +103,11 @@ export default function VersePage() {
         <span className="ornament-symbol">&#x0970; &#x0970; &#x0970;</span>
       </div>
 
-      {/* 8. Commentary section */}
+      {/* 4. Commentary section */}
       {commentaries.length > 0 && <CommentaryPanel commentaries={commentaries} />}
 
       {/* Flashcard quiz (bonus) */}
       {words.length > 0 && <Flashcard words={words} />}
-
-      {/* DevanagariTrainer REMOVED from verse page — now lives on /dashboard */}
     </main>
   )
 }

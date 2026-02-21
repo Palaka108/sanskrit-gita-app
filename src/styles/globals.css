@@ -60,6 +60,30 @@
   50%      { transform: scaleY(1); }
 }
 
+@keyframes waterDrift {
+  0%   { transform: translateX(-25%) translateY(0) scaleY(1); }
+  25%  { transform: translateX(-20%) translateY(-3px) scaleY(1.02); }
+  50%  { transform: translateX(-15%) translateY(0) scaleY(1); }
+  75%  { transform: translateX(-20%) translateY(3px) scaleY(0.98); }
+  100% { transform: translateX(-25%) translateY(0) scaleY(1); }
+}
+
+@keyframes waterDrift2 {
+  0%   { transform: translateX(-20%) translateY(0) scaleY(1); }
+  25%  { transform: translateX(-25%) translateY(4px) scaleY(0.97); }
+  50%  { transform: translateX(-30%) translateY(0) scaleY(1); }
+  75%  { transform: translateX(-25%) translateY(-4px) scaleY(1.03); }
+  100% { transform: translateX(-20%) translateY(0) scaleY(1); }
+}
+
+@keyframes waterDrift3 {
+  0%   { transform: translateX(-30%) translateY(0) scaleY(1); }
+  25%  { transform: translateX(-22%) translateY(-2px) scaleY(1.01); }
+  50%  { transform: translateX(-18%) translateY(0) scaleY(1); }
+  75%  { transform: translateX(-24%) translateY(2px) scaleY(0.99); }
+  100% { transform: translateX(-30%) translateY(0) scaleY(1); }
+}
+
 /* ---- Reset ---- */
 
 *,
@@ -633,6 +657,57 @@ p, td, li, span, button, a, select, label {
 
 .verse-page {
   padding-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Calm Water Background ---- */
+
+.water-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.water-wave {
+  position: absolute;
+  width: 250%;
+  height: 100%;
+  opacity: 0.035;
+  border-radius: 45%;
+}
+
+.water-wave-1 {
+  bottom: -60%;
+  left: 0;
+  background: radial-gradient(ellipse at 50% 80%, rgba(100, 160, 200, 0.8) 0%, transparent 60%);
+  animation: waterDrift 12s ease-in-out infinite;
+}
+
+.water-wave-2 {
+  bottom: -65%;
+  left: 0;
+  background: radial-gradient(ellipse at 40% 75%, rgba(80, 140, 190, 0.6) 0%, transparent 55%);
+  animation: waterDrift2 16s ease-in-out infinite;
+  opacity: 0.025;
+}
+
+.water-wave-3 {
+  bottom: -55%;
+  left: 0;
+  background: radial-gradient(ellipse at 60% 85%, rgba(120, 170, 210, 0.5) 0%, transparent 50%);
+  animation: waterDrift3 20s ease-in-out infinite;
+  opacity: 0.02;
+}
+
+.verse-page > *:not(.water-bg) {
+  position: relative;
+  z-index: 1;
 }
 
 .loading,
@@ -772,6 +847,63 @@ p, td, li, span, button, a, select, label {
 
 .devanagari-block p:hover {
   text-shadow: 0 0 20px rgba(198, 167, 94, 0.3), 0 0 40px rgba(198, 167, 94, 0.1);
+}
+
+/* ---- Devanagari Dropdown ---- */
+
+.devanagari-dropdown {
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(198, 167, 94, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.devanagari-dropdown-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.3rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  color: #E8E0D4;
+  transition: background 0.2s;
+}
+
+.devanagari-dropdown-toggle:hover {
+  background: rgba(198, 167, 94, 0.04);
+}
+
+.devanagari-dropdown-toggle.open {
+  background: rgba(198, 167, 94, 0.04);
+  border-bottom: 1px solid rgba(198, 167, 94, 0.08);
+}
+
+.dropdown-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: 'Noto Serif Devanagari', Georgia, serif;
+  color: #C6A75E;
+  letter-spacing: 0.03em;
+}
+
+.dropdown-chevron {
+  font-size: 0.85rem;
+  color: #C6A75E;
+  transition: transform 0.25s ease;
+}
+
+.dropdown-chevron.open {
+  transform: rotate(180deg);
+}
+
+.devanagari-dropdown-body {
+  padding: 1rem 1.3rem 1.2rem;
+  animation: fadeIn 0.35s ease-out;
+  text-align: center;
 }
 
 /* ---- Word-by-Word Breakdown ---- */

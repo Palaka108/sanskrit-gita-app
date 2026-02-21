@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Verse } from '../types/verse'
 import type { Word } from '../types/grammar'
 import { formatVerseToFourLines } from '../utils/formatVerse'
@@ -16,6 +17,8 @@ function verseLabel(verse: Verse): string {
 }
 
 export default function VerseViewer({ verse, words, onWordClick }: VerseViewerProps) {
+  const [devanagariOpen, setDevanagariOpen] = useState(false)
+
   // 4-line split for both transliteration and devanagari
   const translitLines = formatVerseToFourLines(verse.transliteration)
   const devanagariLines = formatVerseToFourLines(verse.devanagari)
@@ -72,18 +75,27 @@ export default function VerseViewer({ verse, words, onWordClick }: VerseViewerPr
         <p>{verse.translation}</p>
       </div>
 
-      {/* ---- 3 & 4. Audio buttons are rendered by parent (VersePage) ---- */}
-
-      {/* ---- 5. SANSKRIT DEVANAGARI (4 lines) ---- */}
-      <div className="glass-card devanagari-section">
-        <div className="devanagari-block">
-          {devanagariLines.map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
-        </div>
+      {/* ---- 3. SANSKRIT DEVANAGARI (collapsible dropdown) ---- */}
+      <div className="devanagari-dropdown">
+        <button
+          className={`devanagari-dropdown-toggle ${devanagariOpen ? 'open' : ''}`}
+          onClick={() => setDevanagariOpen(o => !o)}
+        >
+          <span className="dropdown-label">Sanskrit Devanagari</span>
+          <span className={`dropdown-chevron ${devanagariOpen ? 'open' : ''}`}>&#9662;</span>
+        </button>
+        {devanagariOpen && (
+          <div className="devanagari-dropdown-body">
+            <div className="devanagari-block">
+              {devanagariLines.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* ---- 6. WORD-BY-WORD interactive breakdown ---- */}
+      {/* ---- 4. WORD-BY-WORD interactive breakdown ---- */}
       {words.length > 0 && (
         <div className="word-breakdown-section">
           <h3>Word-by-Word Breakdown</h3>
