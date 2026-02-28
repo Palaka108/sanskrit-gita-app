@@ -9,7 +9,7 @@ interface GrammarConcept {
 }
 
 interface GrammarIntroSectionProps {
-  words: Word[]
+  words?: Word[]
 }
 
 /**
@@ -142,9 +142,45 @@ function buildConcepts(words: Word[]): GrammarConcept[] {
   return concepts
 }
 
+const GENERIC_CONCEPTS: GrammarConcept[] = [
+  {
+    term: 'Verb Root (Dhatu)',
+    sanskrit: 'धातु',
+    explanation:
+      'A verb root is the most basic form of a verb — the seed from which different verb forms grow. In English, think of "go" as a root that becomes "goes", "going", "went". In Sanskrit, verb roots (dhātu) transform through prefixes, suffixes, and endings.',
+  },
+  {
+    term: 'Grammatical Case',
+    sanskrit: 'विभक्ति',
+    explanation:
+      'A case tells you the role a word plays in a sentence — is it the doer, the receiver, or something else? English uses word order. Sanskrit uses case endings instead, so word order is flexible.',
+  },
+  {
+    term: 'Sanskrit Compounds',
+    sanskrit: 'समास',
+    explanation:
+      'Sanskrit loves combining words into compounds — sometimes two, three, or even four words merge into one. Understanding the compound type helps you break down long words into their meaningful parts.',
+  },
+  {
+    term: 'Imperative',
+    sanskrit: 'लोट्',
+    explanation:
+      'The imperative is a command form. It means someone is directly telling someone else to do something — a direct instruction carrying authority.',
+  },
+  {
+    term: 'Future Tense',
+    sanskrit: 'लृट्',
+    explanation:
+      'Future tense means "I will do" or "it will happen." It describes an action that has not happened yet but is promised or expected.',
+  },
+]
+
 export default function GrammarIntroSection({ words }: GrammarIntroSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const concepts = useMemo(() => buildConcepts(words), [words])
+  const concepts = useMemo(
+    () => (words && words.length > 0 ? buildConcepts(words) : GENERIC_CONCEPTS),
+    [words]
+  )
 
   function toggle(index: number) {
     setOpenIndex(openIndex === index ? null : index)
