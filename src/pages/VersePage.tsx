@@ -109,9 +109,9 @@ export default function VersePage() {
         <GrammarModal word={selectedWord} onClose={() => setSelectedWord(null)} />
       )}
 
-      {/* 3. Grammar Focus section */}
+      {/* 3. Grammar Focus section — built from this verse's word data */}
       <div id="section-grammar">
-        <GrammarIntroSection />
+        <GrammarIntroSection words={words} />
       </div>
 
       {/* Ornament separator */}

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import type { Word } from '../types/grammar'
 
 interface GrammarConcept {
   term: string
@@ -7,76 +8,149 @@ interface GrammarConcept {
   verseExample?: string
 }
 
-const GRAMMAR_CONCEPTS: GrammarConcept[] = [
-  {
-    term: 'Verb Root (Dhatu)',
-    sanskrit: 'धातु',
-    explanation:
-      'A verb root is the most basic form of a verb — the seed from which different verb forms grow. In English, think of "go" as a root that becomes "goes", "going", "went". In Sanskrit, "muc" (to release) is the root behind "moksayisyami" (I will release).',
-    verseExample:
-      'In this verse, "tyaj" (to abandon) is the root behind "parityajya" (having abandoned).',
-  },
-  {
-    term: 'Grammatical Case',
-    sanskrit: 'विभक्ति',
-    explanation:
-      'A case tells you the role a word plays in a sentence — is it the doer, the receiver, or something else? English uses word order ("The dog bit the man" vs "The man bit the dog"). Sanskrit uses case endings instead, so word order is flexible.',
-    verseExample:
-      '"mam" is in the accusative case, meaning it is the object — the one receiving the action. Krishna is saying "come to Me" — He is the destination.',
-  },
-  {
-    term: '1st Person',
-    explanation:
-      'First person means "I" or "we" — the speaker is talking about themselves. When you see a 1st-person verb, the speaker is the one doing the action.',
-    verseExample:
-      '"moksayisyami" is 1st person — Krishna Himself is saying "I will release you." He is personally making this promise.',
-  },
-  {
-    term: '2nd Person',
-    explanation:
-      'Second person means "you" — the speaker is addressing someone directly. When you see a 2nd-person verb or pronoun, someone is being spoken to.',
-    verseExample:
-      '"tvam" (you) is 2nd person — Krishna is directly addressing Arjuna. "vraja" (go/surrender) is also 2nd person — a direct instruction to Arjuna.',
-  },
-  {
-    term: 'Masculine / Feminine / Neuter',
-    explanation:
-      'In Sanskrit, every noun has a gender — masculine, feminine, or neuter. This is a grammatical property, not always about actual gender. The gender affects which endings the word takes.',
-    verseExample:
-      '"dharma" is masculine. "sarana" (shelter) is neuter. The endings change depending on gender and case.',
-  },
-  {
-    term: 'Past Participle',
-    sanskrit: 'क्त / क्तवतु',
-    explanation:
-      'A past participle describes an action that has already been completed. In English: "abandoned", "spoken", "done". In Sanskrit, these forms often end in -ta or -na.',
-    verseExample:
-      '"parityajya" uses a related form — it means "having abandoned." The action of abandoning comes first, then the next action follows.',
-  },
-  {
-    term: 'Imperative',
-    sanskrit: 'लोट्',
-    explanation:
-      'The imperative is a command form. It means someone is directly telling someone else to do something. No "please" or "maybe" — it is a direct instruction.',
-    verseExample:
-      '"vraja" (surrender / go) is imperative — Krishna is directly commanding Arjuna: "Surrender unto Me!" It carries authority and urgency.',
-  },
-  {
-    term: 'Future Tense',
-    sanskrit: 'लृट्',
-    explanation:
-      'Future tense means "I will do" or "it will happen." It describes an action that has not happened yet but is promised or expected.',
-    verseExample:
-      '"moksayisyami" is future tense — "I will liberate." Krishna is making a personal promise about what He will do. This is not a hope — it is a divine guarantee.',
-  },
-]
+interface GrammarIntroSectionProps {
+  words: Word[]
+}
 
-export default function GrammarIntroSection() {
+/**
+ * Build grammar concepts dynamically from the verse's word data.
+ * Each concept only appears if relevant words exist in this verse.
+ */
+function buildConcepts(words: Word[]): GrammarConcept[] {
+  const concepts: GrammarConcept[] = []
+
+  // 1. Verb Root (Dhatu) — words that have a root
+  const wordsWithRoot = words.filter(w => w.root)
+  if (wordsWithRoot.length > 0) {
+    const examples = wordsWithRoot
+      .map(w => `"${w.word}" comes from the root "${w.root}" — meaning "${w.meaning}"`)
+      .join('. ')
+    concepts.push({
+      term: 'Verb Root (Dhatu)',
+      sanskrit: 'धातु',
+      explanation:
+        'A verb root is the most basic form of a verb — the seed from which different verb forms grow. In English, think of "go" as a root that becomes "goes", "going", "went". In Sanskrit, verb roots (dhātu) transform through prefixes, suffixes, and endings.',
+      verseExample: `In this verse: ${examples}.`,
+    })
+  }
+
+  // 2. Grammatical Case — words that have a case
+  const wordsWithCase = words.filter(w => w.grammatical_case)
+  if (wordsWithCase.length > 0) {
+    const caseExamples = wordsWithCase
+      .map(w => `"${w.word}" is ${w.grammatical_case} — "${w.meaning}"`)
+      .join('. ')
+    concepts.push({
+      term: 'Grammatical Case',
+      sanskrit: 'विभक्ति',
+      explanation:
+        'A case tells you the role a word plays in a sentence — is it the doer, the receiver, or something else? English uses word order ("The dog bit the man" vs "The man bit the dog"). Sanskrit uses case endings instead, so word order is flexible.',
+      verseExample: `In this verse: ${caseExamples}.`,
+    })
+  }
+
+  // 3. Tense — words that have a tense
+  const wordsWithTense = words.filter(w => w.tense)
+  if (wordsWithTense.length > 0) {
+    // Group by tense type for cleaner display
+    const tenseMap = new Map<string, Word[]>()
+    for (const w of wordsWithTense) {
+      const key = w.tense!.toLowerCase()
+      if (!tenseMap.has(key)) tenseMap.set(key, [])
+      tenseMap.get(key)!.push(w)
+    }
+
+    for (const [tense, tenseWords] of tenseMap) {
+      const examples = tenseWords
+        .map(w => `"${w.word}" — "${w.meaning}"`)
+        .join(', ')
+
+      let termName = tense.charAt(0).toUpperCase() + tense.slice(1)
+      let sanskrit: string | undefined
+      let explanation: string
+
+      if (tense.includes('imperative')) {
+        termName = 'Imperative'
+        sanskrit = 'लोट्'
+        explanation =
+          'The imperative is a command form. It means someone is directly telling someone else to do something — a direct instruction carrying authority.'
+      } else if (tense.includes('future')) {
+        termName = 'Future Tense'
+        sanskrit = 'लृट्'
+        explanation =
+          'Future tense means "I will do" or "it will happen." It describes an action that has not happened yet but is promised or expected.'
+      } else if (tense.includes('present')) {
+        termName = 'Present Tense'
+        sanskrit = 'लट्'
+        explanation =
+          'Present tense describes an action happening now or a general truth. In Sanskrit, the present tense (laṭ) shows ongoing or habitual action.'
+      } else if (tense.includes('past') || tense.includes('perfect')) {
+        termName = 'Past Tense'
+        sanskrit = 'लिट् / लङ्'
+        explanation =
+          'Past tense describes an action that has already happened. Sanskrit has several past tenses for different types of past action.'
+      } else if (tense.includes('participle')) {
+        termName = 'Participle'
+        sanskrit = 'क्त / क्तवतु'
+        explanation =
+          'A participle describes an action that has been completed, often used like an adjective. In English: "abandoned", "spoken", "done". In Sanskrit, these forms often end in -ta or -na.'
+      } else {
+        explanation = `This verb form (${tense}) describes a specific type of action or mood in Sanskrit grammar.`
+      }
+
+      concepts.push({
+        term: termName,
+        sanskrit,
+        explanation,
+        verseExample: `In this verse: ${examples}.`,
+      })
+    }
+  }
+
+  // 4. Grammar notes — words with rich grammar_note (compound analysis, etc.)
+  const wordsWithCompounds = words.filter(
+    w => w.grammar_note && (w.grammar_note.includes('compound') || w.grammar_note.includes('Compound'))
+  )
+  if (wordsWithCompounds.length > 0) {
+    const examples = wordsWithCompounds
+      .map(w => `"${w.word}" — ${w.grammar_note}`)
+      .join('. ')
+    concepts.push({
+      term: 'Sanskrit Compounds',
+      sanskrit: 'समास',
+      explanation:
+        'Sanskrit loves combining words into compounds — sometimes two, three, or even four words merge into one. Understanding the compound type helps you break down long words into their meaningful parts.',
+      verseExample: `In this verse: ${examples}.`,
+    })
+  }
+
+  // 5. Spiritual insight summary (if any words have spiritual_insight)
+  const wordsWithInsight = words.filter(w => w.spiritual_insight)
+  if (wordsWithInsight.length > 0) {
+    const insights = wordsWithInsight
+      .map(w => `"${w.word}": ${w.spiritual_insight}`)
+      .join(' • ')
+    concepts.push({
+      term: 'Spiritual Insights',
+      sanskrit: 'अध्यात्म',
+      explanation:
+        'Beyond grammar, each Sanskrit word carries spiritual depth. The ācāryas reveal how word meanings point to deeper truths about the soul, God, and devotion.',
+      verseExample: insights,
+    })
+  }
+
+  return concepts
+}
+
+export default function GrammarIntroSection({ words }: GrammarIntroSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const concepts = useMemo(() => buildConcepts(words), [words])
 
   function toggle(index: number) {
     setOpenIndex(openIndex === index ? null : index)
   }
+
+  if (concepts.length === 0) return null
 
   return (
     <section className="grammar-intro">
@@ -89,7 +163,7 @@ export default function GrammarIntroSection() {
       </div>
 
       <div className="grammar-intro-grid">
-        {GRAMMAR_CONCEPTS.map((concept, i) => (
+        {concepts.map((concept, i) => (
           <div key={i} className="grammar-intro-item">
             <button className="grammar-intro-header" onClick={() => toggle(i)}>
               <span>
