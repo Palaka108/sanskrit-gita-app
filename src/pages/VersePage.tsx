@@ -12,11 +12,21 @@ import CommentaryPanel from '../components/CommentaryPanel'
 import Flashcard from '../components/Flashcard'
 import VerseNav from '../components/VerseNav'
 
+const NATURE_SCENES = [
+  '/videos/meditation-intro.mp4',
+  '/videos/nature-lotus-pond.mp4',
+  '/videos/nature-forest.mp4',
+  '/videos/nature-sunset.mp4',
+]
+
 export default function VersePage() {
   const { chapter, verse: verseNum } = useParams<{ chapter: string; verse: string }>()
   const [searchParams] = useSearchParams()
   const sourceHint = searchParams.get('source')
 
+  const [videoSrc] = useState(
+    () => NATURE_SCENES[Math.floor(Math.random() * NATURE_SCENES.length)]
+  )
   const [verse, setVerse] = useState<Verse | null>(null)
   const [words, setWords] = useState<Word[]>([])
   const [commentaries, setCommentaries] = useState<Commentary[]>([])
@@ -78,16 +88,17 @@ export default function VersePage() {
 
   return (
     <main className="verse-page">
-      {/* Video water background — same approach as QualiaVibe */}
+      {/* Nature video background — randomly selected per visit */}
       <div className="water-bg" aria-hidden="true">
         <video
+          key={videoSrc}
           autoPlay
           muted
           loop
           playsInline
           className="water-video"
         >
-          <source src="/videos/meditation-intro.mp4" type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
         {/* Dark overlay to keep text readable */}
         <div className="water-overlay"></div>
