@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface AudioButtonsProps {
   verseId: string
@@ -6,25 +7,64 @@ interface AudioButtonsProps {
   verse: number
 }
 
+/** Ordered playlist of all verses with Gita Vibe audio */
+const PLAYLIST: { chapter: number; verse: number }[] = [
+  { chapter: 1, verse: 1 },
+  { chapter: 2, verse: 14 },
+  { chapter: 2, verse: 20 },
+  { chapter: 3, verse: 13 },
+  { chapter: 3, verse: 27 },
+  { chapter: 3, verse: 37 },
+  { chapter: 4, verse: 2 },
+  { chapter: 4, verse: 8 },
+  { chapter: 4, verse: 34 },
+  { chapter: 5, verse: 29 },
+  { chapter: 6, verse: 47 },
+  { chapter: 7, verse: 3 },
+  { chapter: 7, verse: 14 },
+  { chapter: 8, verse: 5 },
+  { chapter: 9, verse: 14 },
+  { chapter: 18, verse: 66 },
+]
+
+function findPlaylistIndex(chapter: number, verse: number): number {
+  return PLAYLIST.findIndex(p => p.chapter === chapter && p.verse === verse)
+}
+
 /**
- * Two audio buttons per verse:
+ * Audio player with:
  *   1. Traditional Chant (placeholder)
  *   2. Gita Vibe — loads from public/audio/{chapter}_{verse}.mp3
+ *   3. Playlist controls: prev / next / auto-play toggle
  *
  * Gita Vibe autoplays on mount if available.
  */
 export default function AudioButtons({ verseId: _verseId, chapter, verse }: AudioButtonsProps) {
+  const navigate = useNavigate()
   const [playingTraditional, setPlayingTraditional] = useState(false)
   const [playingVibe, setPlayingVibe] = useState(false)
   const [vibeAvailable, setVibeAvailable] = useState(false)
   const [vibeChecked, setVibeChecked] = useState(false)
   const [muted, setMuted] = useState(false)
   const [volume, setVolume] = useState(0.7)
+  const [autoPlayNext, setAutoPlayNext] = useState(false)
   const traditionalRef = useRef<HTMLAudioElement | null>(null)
   const vibeRef = useRef<HTMLAudioElement | null>(null)
 
   const vibeSrc = `/audio/${chapter}_${verse}.mp3`
   const traditionalSrc = ''
+
+  const currentIdx = findPlaylistIndex(chapter, verse)
+  const hasPrev = currentIdx > 0
+  const hasNext = currentIdx >= 0 && currentIdx < PLAYLIST.length - 1
+  const isInPlaylist = currentIdx >= 0
+
+  // Navigate to a playlist item
+  const goToVerse = useCallback((idx: number) => {
+    if (idx < 0 || idx >= PLAYLIST.length) return
+    const target = PLAYLIST[idx]
+    navigate(`/verse/${target.chapter}/${target.verse}`)
+  }, [navigate])
 
   // Probe whether the vibe mp3 exists using fetch HEAD, then autoplay
   useEffect(() => {
@@ -119,9 +159,17 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
     }
   }
 
+  function handleVibeEnded() {
+    setPlayingVibe(false)
+    // Auto-play next song if enabled
+    if (autoPlayNext && hasNext) {
+      goToVerse(currentIdx + 1)
+    }
+  }
+
   function handleEnded(type: 'traditional' | 'vibe') {
     if (type === 'traditional') setPlayingTraditional(false)
-    else setPlayingVibe(false)
+    else handleVibeEnded()
   }
 
   const toggleMute = () => setMuted(m => !m)
@@ -173,6 +221,55 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
         {playingVibe && <span className="audio-wave"><span></span><span></span><span></span><span></span></span>}
         {vibeChecked && !vibeAvailable && <span className="audio-soon">Coming Soon</span>}
       </button>
+
+      {/* Playlist controls — prev / next / auto-play */}
+      {isInPlaylist && (
+        <div className="playlist-controls">
+          <button
+            className="playlist-btn"
+            onClick={() => goToVerse(currentIdx - 1)}
+            disabled={!hasPrev}
+            title={hasPrev ? `Previous: Bg ${PLAYLIST[currentIdx - 1].chapter}.${PLAYLIST[currentIdx - 1].verse}` : 'No previous track'}
+            aria-label="Previous track"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="19,20 9,12 19,4" fill="currentColor" />
+              <line x1="5" y1="19" x2="5" y2="5" />
+            </svg>
+          </button>
+
+          <span className="playlist-position">
+            {currentIdx + 1} / {PLAYLIST.length}
+          </span>
+
+          <button
+            className="playlist-btn"
+            onClick={() => goToVerse(currentIdx + 1)}
+            disabled={!hasNext}
+            title={hasNext ? `Next: Bg ${PLAYLIST[currentIdx + 1].chapter}.${PLAYLIST[currentIdx + 1].verse}` : 'No next track'}
+            aria-label="Next track"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="5,4 15,12 5,20" fill="currentColor" />
+              <line x1="19" y1="5" x2="19" y2="19" />
+            </svg>
+          </button>
+
+          <button
+            className={`playlist-btn playlist-auto ${autoPlayNext ? 'active' : ''}`}
+            onClick={() => setAutoPlayNext(a => !a)}
+            title={autoPlayNext ? 'Auto-play ON — will play next verse' : 'Auto-play OFF — tap to enable playlist mode'}
+            aria-label="Toggle auto-play"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="17,1 21,5 17,9" />
+              <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+              <polyline points="7,23 3,19 7,15" />
+              <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {/* Volume controls */}
       {(vibeAvailable || traditionalSrc) && (

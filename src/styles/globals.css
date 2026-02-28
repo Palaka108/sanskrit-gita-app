@@ -1046,6 +1046,7 @@ p, td, li, span, button, a, select, label {
 
 .audio-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.8rem;
   margin-bottom: 2rem;
 }
@@ -1151,7 +1152,7 @@ p, td, li, span, button, a, select, label {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  margin-top: 0.6rem;
+  width: 100%;
   padding: 0.5rem 1rem;
   background: rgba(11, 15, 26, 0.45);
   border: 1px solid rgba(198, 167, 94, 0.08);
@@ -1210,6 +1211,84 @@ p, td, li, span, button, a, select, label {
   border: none;
   border-radius: 50%;
   cursor: pointer;
+}
+
+/* ---- Playlist Controls ---- */
+
+.playlist-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 1rem;
+  background: rgba(11, 15, 26, 0.45);
+  border: 1px solid rgba(198, 167, 94, 0.1);
+  border-radius: 10px;
+  animation: fadeIn 0.4s ease;
+}
+
+.playlist-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+}
+
+.playlist-btn:hover:not(:disabled) {
+  background: rgba(198, 167, 94, 0.15);
+  border-color: rgba(198, 167, 94, 0.4);
+  color: #D4B96E;
+  transform: scale(1.08);
+}
+
+.playlist-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.playlist-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.playlist-position {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+  min-width: 48px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.playlist-auto {
+  position: relative;
+}
+
+.playlist-auto.active {
+  background: rgba(198, 167, 94, 0.2);
+  border-color: rgba(198, 167, 94, 0.5);
+  color: #D4B96E;
+  box-shadow: 0 0 10px rgba(198, 167, 94, 0.15);
+}
+
+.playlist-auto.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #D4B96E;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(198, 167, 94, 0.4);
 }
 
 /* ---- Grammar Modal ---- */
@@ -2090,6 +2169,21 @@ p, td, li, span, button, a, select, label {
 
   .audio-buttons {
     flex-direction: column;
+  }
+
+  .playlist-controls {
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .playlist-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .playlist-position {
+    font-size: 0.72rem;
+    min-width: 40px;
   }
 
   .verse-nav {
