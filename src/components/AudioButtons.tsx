@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../lib/AuthProvider'
+import { supabase } from '../lib/supabaseClient'
 
 interface AudioButtonsProps {
   verseId: string
@@ -10,6 +12,9 @@ interface AudioButtonsProps {
 /** Ordered playlist of all verses with Gita Vibe audio */
 const PLAYLIST: { chapter: number; verse: number }[] = [
   { chapter: 1, verse: 1 },
+  { chapter: 1, verse: 2 },
+  { chapter: 1, verse: 3 },
+  { chapter: 1, verse: 4 },
   { chapter: 2, verse: 14 },
   { chapter: 2, verse: 20 },
   { chapter: 3, verse: 13 },
@@ -41,6 +46,25 @@ function findPlaylistIndex(chapter: number, verse: number): number {
  */
 export default function AudioButtons({ verseId: _verseId, chapter, verse }: AudioButtonsProps) {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const lastLogRef = useRef<string>('')
+
+  /** Log a listen event (debounced: skip if same verse+track within 5s) */
+  function logListen(trackType: 'gita_vibe' | 'traditional') {
+    if (!user) return
+    const key = `${chapter}:${verse}:${trackType}`
+    if (lastLogRef.current === key) return
+    lastLogRef.current = key
+    setTimeout(() => { if (lastLogRef.current === key) lastLogRef.current = '' }, 5000)
+
+    supabase.from('verse_listens').insert({
+      user_id: user.id,
+      chapter,
+      verse,
+      track_type: trackType,
+    }).then(() => {})
+  }
+
   const [playingTraditional, setPlayingTraditional] = useState(false)
   const [playingVibe, setPlayingVibe] = useState(false)
   const [vibeAvailable, setVibeAvailable] = useState(false)
@@ -88,7 +112,7 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
             audio.muted = muted
             audio.load()
             audio.play()
-              .then(() => { if (!cancelled) setPlayingVibe(true) })
+              .then(() => { if (!cancelled) { setPlayingVibe(true); logListen('gita_vibe') } })
               .catch(() => { if (!cancelled) setPlayingVibe(false) })
           }, 50)
         } else {
@@ -130,7 +154,7 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
         vibeRef.current?.pause()
         setPlayingVibe(false)
       }
-      traditionalRef.current?.play().catch(() => {})
+      traditionalRef.current?.play().then(() => logListen('traditional')).catch(() => {})
       setPlayingTraditional(true)
     }
   }
@@ -154,7 +178,7 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
       audio.volume = volume
       audio.muted = muted
       audio.play()
-        .then(() => setPlayingVibe(true))
+        .then(() => { setPlayingVibe(true); logListen('gita_vibe') })
         .catch(() => setPlayingVibe(false))
     }
   }
