@@ -226,15 +226,14 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
       {isInPlaylist && (
         <div className="playlist-controls">
           <button
-            className="playlist-btn"
+            className="playlist-btn playlist-arrow"
             onClick={() => goToVerse(currentIdx - 1)}
             disabled={!hasPrev}
             title={hasPrev ? `Previous: Bg ${PLAYLIST[currentIdx - 1].chapter}.${PLAYLIST[currentIdx - 1].verse}` : 'No previous track'}
             aria-label="Previous track"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="19,20 9,12 19,4" fill="currentColor" />
-              <line x1="5" y1="19" x2="5" y2="5" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15,4 7,12 15,20" />
             </svg>
           </button>
 
@@ -243,15 +242,14 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
           </span>
 
           <button
-            className="playlist-btn"
+            className="playlist-btn playlist-arrow"
             onClick={() => goToVerse(currentIdx + 1)}
             disabled={!hasNext}
             title={hasNext ? `Next: Bg ${PLAYLIST[currentIdx + 1].chapter}.${PLAYLIST[currentIdx + 1].verse}` : 'No next track'}
             aria-label="Next track"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="5,4 15,12 5,20" fill="currentColor" />
-              <line x1="19" y1="5" x2="19" y2="19" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9,4 17,12 9,20" />
             </svg>
           </button>
 
@@ -261,7 +259,7 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
             title={autoPlayNext ? 'Auto-play ON — will play next verse' : 'Auto-play OFF — tap to enable playlist mode'}
             aria-label="Toggle auto-play"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="17,1 21,5 17,9" />
               <path d="M3 11V9a4 4 0 0 1 4-4h14" />
               <polyline points="7,23 3,19 7,15" />

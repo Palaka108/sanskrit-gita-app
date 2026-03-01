@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import type { Verse } from '../types/verse'
@@ -14,8 +14,6 @@ import VerseNav from '../components/VerseNav'
 
 const NATURE_SCENES = [
   '/videos/meditation-intro.mp4',
-  '/videos/nature-lotus-pond.mp4',
-  '/videos/nature-forest.mp4',
   '/videos/nature-sunset.mp4',
 ]
 
@@ -27,6 +25,13 @@ export default function VersePage() {
   const [videoSrc] = useState(
     () => NATURE_SCENES[Math.floor(Math.random() * NATURE_SCENES.length)]
   )
+  const bgVideoRef = useRef<HTMLVideoElement>(null)
+
+  /** Slow down video playback for a meditative feel */
+  const handleVideoReady = useCallback(() => {
+    if (bgVideoRef.current) bgVideoRef.current.playbackRate = 0.55
+  }, [])
+
   const [verse, setVerse] = useState<Verse | null>(null)
   const [words, setWords] = useState<Word[]>([])
   const [commentaries, setCommentaries] = useState<Commentary[]>([])
@@ -91,12 +96,14 @@ export default function VersePage() {
       {/* Nature video background — randomly selected per visit */}
       <div className="water-bg" aria-hidden="true">
         <video
+          ref={bgVideoRef}
           key={videoSrc}
           autoPlay
           muted
           loop
           playsInline
           className="water-video"
+          onCanPlay={handleVideoReady}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
