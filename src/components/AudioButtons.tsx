@@ -5,6 +5,7 @@ interface AudioButtonsProps {
   verseId: string
   chapter: number
   verse: number
+  sourceText?: string | null
 }
 
 /** Ordered playlist of all verses with Gita Vibe audio */
@@ -39,7 +40,7 @@ function findPlaylistIndex(chapter: number, verse: number): number {
  *
  * Gita Vibe autoplays on mount if available.
  */
-export default function AudioButtons({ verseId: _verseId, chapter, verse }: AudioButtonsProps) {
+export default function AudioButtons({ verseId: _verseId, chapter, verse, sourceText }: AudioButtonsProps) {
   const navigate = useNavigate()
   const [playingTraditional, setPlayingTraditional] = useState(false)
   const [playingVibe, setPlayingVibe] = useState(false)
@@ -51,7 +52,8 @@ export default function AudioButtons({ verseId: _verseId, chapter, verse }: Audi
   const traditionalRef = useRef<HTMLAudioElement | null>(null)
   const vibeRef = useRef<HTMLAudioElement | null>(null)
 
-  const vibeSrc = `/audio/${chapter}_${verse}.mp3`
+  const isNoi = sourceText === 'noi'
+  const vibeSrc = isNoi ? `/audio/noi_${verse}.mp3` : `/audio/${chapter}_${verse}.mp3`
   const traditionalSrc = ''
 
   const currentIdx = findPlaylistIndex(chapter, verse)

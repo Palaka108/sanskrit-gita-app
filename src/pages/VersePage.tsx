@@ -117,7 +117,7 @@ export default function VersePage() {
       <VerseNav hasWords={words.length > 0} hasCommentaries={commentaries.length > 0} />
 
       {/* 1. GITA VIBE — audio player */}
-      <AudioButtons verseId={verse.id} chapter={verse.chapter} verse={verse.verse} />
+      <AudioButtons verseId={verse.id} chapter={verse.chapter} verse={verse.verse} sourceText={verse.source_text} />
 
       {/* 2. Verse content: transliteration, translation, devanagari dropdown, word breakdown */}
       <VerseViewer verse={verse} words={words} onWordClick={setSelectedWord} />
