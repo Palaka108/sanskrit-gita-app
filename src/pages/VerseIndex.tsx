@@ -5,25 +5,6 @@ import type { Verse } from '../types/verse'
 
 type FilterMode = 'all' | 'gita' | 'noi'
 
-const GRAMMAR_CONCEPTS = [
-  'present tense verbs',
-  'compound nouns (samāsa)',
-  'instrumental case',
-  'nominative masculine',
-  'dative case',
-  'imperative verbs',
-  'accusative singular',
-  'genitive plural',
-  'pronouns + indeclinables',
-  'particles (eva, ca)',
-  'present participle',
-  'past passive participle',
-  'compound + genitive',
-  'verb root recognition',
-  'locative case',
-  'indeclinable usage',
-  'causative future tense',
-]
 
 function verseLabel(v: Verse): string {
   if (v.source_text === 'noi') return `NOI ${v.verse}`
@@ -39,7 +20,7 @@ export default function VerseIndex() {
   const [verses, setVerses] = useState<Verse[]>([])
   const [loading, setLoading] = useState(true)
   const [textFilter, setTextFilter] = useState<FilterMode>('all')
-  const [grammarFilter, setGrammarFilter] = useState<string>('')
+  const [chapterFilter, setChapterFilter] = useState<string>('')
 
   useEffect(() => {
     async function fetchVerses() {
@@ -56,7 +37,7 @@ export default function VerseIndex() {
   const filtered = verses.filter((v) => {
     if (textFilter === 'gita' && v.source_text !== 'gita') return false
     if (textFilter === 'noi' && v.source_text !== 'noi') return false
-    if (grammarFilter && v.grammar_focus !== grammarFilter) return false
+    if (chapterFilter && v.source_text === 'gita' && v.chapter !== Number(chapterFilter)) return false
     return true
   })
 
@@ -67,7 +48,7 @@ export default function VerseIndex() {
   return (
     <main className="verse-index-page">
       <h1>Verse Library</h1>
-      <p className="index-subtitle">{verses.length} verses with grammar analysis</p>
+      <p className="index-subtitle">{filtered.length} verses available</p>
 
       <div className="filter-bar">
         <div className="filter-group">
@@ -79,15 +60,15 @@ export default function VerseIndex() {
           </div>
         </div>
         <div className="filter-group">
-          <label>Grammar Focus</label>
+          <label>Chapter</label>
           <select
             className="filter-select"
-            value={grammarFilter}
-            onChange={(e) => setGrammarFilter(e.target.value)}
+            value={chapterFilter}
+            onChange={(e) => setChapterFilter(e.target.value)}
           >
-            <option value="">All concepts</option>
-            {GRAMMAR_CONCEPTS.map((c) => (
-              <option key={c} value={c}>{c}</option>
+            <option value="">All chapters</option>
+            {gitaChapters.map((ch) => (
+              <option key={ch} value={ch}>Chapter {ch}</option>
             ))}
           </select>
         </div>
