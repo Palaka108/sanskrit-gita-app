@@ -43,10 +43,32 @@ export default function VerseIndex() {
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
+    audio.volume = 1
     audio.play()
-      .then(() => setIsPlaying(true))
+      .then(() => {
+        setIsPlaying(true)
+        setAutoplayBlocked(false)
+      })
       .catch(() => setAutoplayBlocked(true))
   }, [])
+
+  // If autoplay blocked, play on first user click anywhere on the page
+  useEffect(() => {
+    if (!autoplayBlocked) return
+    function playOnClick() {
+      const audio = audioRef.current
+      if (!audio) return
+      audio.play()
+        .then(() => {
+          setIsPlaying(true)
+          setAutoplayBlocked(false)
+        })
+        .catch(() => {})
+      document.removeEventListener('click', playOnClick)
+    }
+    document.addEventListener('click', playOnClick, { once: true })
+    return () => document.removeEventListener('click', playOnClick)
+  }, [autoplayBlocked])
 
   function togglePlay() {
     const audio = audioRef.current
@@ -81,32 +103,48 @@ export default function VerseIndex() {
 
   return (
     <main className="verse-index-page">
-      {/* Auto-play BG 18.66 banner */}
-      <div className={`now-playing-banner ${isPlaying ? 'playing' : ''}`}>
-        <button className="now-playing-btn" onClick={togglePlay}>
-          <span className="now-playing-icon">
-            {isPlaying ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="6" y="4" width="4" height="16" />
-                <rect x="14" y="4" width="4" height="16" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      {/* Autoplay-blocked overlay — tap anywhere to start */}
+      {autoplayBlocked && !isPlaying && (
+        <div className="autoplay-overlay" onClick={togglePlay}>
+          <div className="autoplay-prompt">
+            <span className="autoplay-play-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5,3 19,12 5,21" />
               </svg>
-            )}
-          </span>
-          <span className="now-playing-text">
-            {autoplayBlocked && !isPlaying ? 'Play BG 18.66' : isPlaying ? 'Now Playing — BG 18.66' : 'BG 18.66'}
-          </span>
-          {isPlaying && (
-            <span className="now-playing-wave">
-              <span></span><span></span><span></span><span></span>
             </span>
-          )}
-        </button>
-        <Link to="/verse/18/66" className="now-playing-study">Study Verse</Link>
-      </div>
+            <span className="autoplay-label">Tap to play BG 18.66</span>
+          </div>
+        </div>
+      )}
+
+      {/* Now playing banner */}
+      {(isPlaying || (!autoplayBlocked && !isPlaying)) && (
+        <div className={`now-playing-banner ${isPlaying ? 'playing' : ''}`}>
+          <button className="now-playing-btn" onClick={togglePlay}>
+            <span className="now-playing-icon">
+              {isPlaying ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="6" y="4" width="4" height="16" />
+                  <rect x="14" y="4" width="4" height="16" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              )}
+            </span>
+            <span className="now-playing-text">
+              {isPlaying ? 'Now Playing — BG 18.66' : 'BG 18.66'}
+            </span>
+            {isPlaying && (
+              <span className="now-playing-wave">
+                <span></span><span></span><span></span><span></span>
+              </span>
+            )}
+          </button>
+          <Link to="/verse/18/66" className="now-playing-study">Study Verse</Link>
+        </div>
+      )}
       <audio
         ref={audioRef}
         src="/audio/18_66.mp3"
