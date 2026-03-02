@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import type { Verse } from '../types/verse'
@@ -22,6 +22,11 @@ export default function VerseIndex() {
   const [textFilter, setTextFilter] = useState<FilterMode>('all')
   const [chapterFilter, setChapterFilter] = useState<string>('')
 
+  // Auto-play BG 18.66
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false)
+
   useEffect(() => {
     async function fetchVerses() {
       const { data } = await supabase.from('verses').select('*')
@@ -33,6 +38,35 @@ export default function VerseIndex() {
     }
     fetchVerses()
   }, [])
+
+  // Auto-play 18.66 on mount
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setAutoplayBlocked(true))
+  }, [])
+
+  function togglePlay() {
+    const audio = audioRef.current
+    if (!audio) return
+    if (isPlaying) {
+      audio.pause()
+      setIsPlaying(false)
+    } else {
+      audio.play()
+        .then(() => {
+          setIsPlaying(true)
+          setAutoplayBlocked(false)
+        })
+        .catch(() => {})
+    }
+  }
+
+  function handleEnded() {
+    setIsPlaying(false)
+  }
 
   const filtered = verses.filter((v) => {
     if (textFilter === 'gita' && v.source_text !== 'gita') return false
@@ -47,6 +81,39 @@ export default function VerseIndex() {
 
   return (
     <main className="verse-index-page">
+      {/* Auto-play BG 18.66 banner */}
+      <div className={`now-playing-banner ${isPlaying ? 'playing' : ''}`}>
+        <button className="now-playing-btn" onClick={togglePlay}>
+          <span className="now-playing-icon">
+            {isPlaying ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="6" y="4" width="4" height="16" />
+                <rect x="14" y="4" width="4" height="16" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="5,3 19,12 5,21" />
+              </svg>
+            )}
+          </span>
+          <span className="now-playing-text">
+            {autoplayBlocked && !isPlaying ? 'Play BG 18.66' : isPlaying ? 'Now Playing — BG 18.66' : 'BG 18.66'}
+          </span>
+          {isPlaying && (
+            <span className="now-playing-wave">
+              <span></span><span></span><span></span><span></span>
+            </span>
+          )}
+        </button>
+        <Link to="/verse/18/66" className="now-playing-study">Study Verse</Link>
+      </div>
+      <audio
+        ref={audioRef}
+        src="/audio/18_66.mp3"
+        onEnded={handleEnded}
+        preload="auto"
+      />
+
       <h1>Verse Library</h1>
       <p className="index-subtitle">{filtered.length} verses available</p>
 
