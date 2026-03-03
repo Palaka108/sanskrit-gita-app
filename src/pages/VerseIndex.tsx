@@ -63,7 +63,7 @@ export default function VerseIndex() {
       if (!audioCtxRef.current) {
         const ctx = new AudioContext()
         audioCtxRef.current = ctx
-        const source = ctx.createMediaElementSource(audio)
+        const source = ctx.createMediaElementSource(audio as HTMLMediaElement)
         sourceRef.current = source
         const gain = ctx.createGain()
         gainRef.current = gain
@@ -77,7 +77,7 @@ export default function VerseIndex() {
 
       if (ctx.state === 'suspended') ctx.resume()
 
-      audio.play()
+      audio!.play()
         .then(() => {
           setIsPlaying(true)
           // Fade volume in over 2 seconds
@@ -88,7 +88,7 @@ export default function VerseIndex() {
           // Autoplay blocked — play on first interaction
           function playOnClick() {
             if (ctx.state === 'suspended') ctx.resume()
-            audio.play()
+            audio!.play()
               .then(() => {
                 setIsPlaying(true)
                 gain.gain.setValueAtTime(0, ctx.currentTime)
