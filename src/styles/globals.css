@@ -504,168 +504,33 @@ p, td, li, span, button, a, select, label {
   animation: fadeIn 0.8s ease-out 0.3s both;
 }
 
-/* ---- Autoplay Overlay (tap to start) ---- */
+/* ---- Audio Toggle (small play/pause button, bottom-right) ---- */
 
-.autoplay-overlay {
+.audio-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
-  margin-bottom: 1.5rem;
-  background: rgba(198, 167, 94, 0.06);
-  border: 1px solid rgba(198, 167, 94, 0.25);
-  border-radius: 16px;
-  cursor: pointer;
-  position: relative;
-  z-index: 2;
-  animation: fadeIn 0.5s ease-out, pulseGlow 2s ease-in-out infinite;
-  transition: all 0.3s;
-}
-
-.autoplay-overlay:hover {
-  background: rgba(198, 167, 94, 0.1);
-  border-color: rgba(198, 167, 94, 0.45);
-}
-
-.autoplay-prompt {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.autoplay-play-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 72px;
-  height: 72px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: rgba(198, 167, 94, 0.12);
+  border: 1px solid rgba(198, 167, 94, 0.3);
+  background: rgba(20, 18, 15, 0.7);
+  backdrop-filter: blur(8px);
   color: #C6A75E;
-  transition: all 0.25s;
-}
-
-.autoplay-overlay:hover .autoplay-play-icon {
-  background: rgba(198, 167, 94, 0.22);
-  transform: scale(1.05);
-}
-
-.autoplay-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #C6A75E;
-  letter-spacing: 0.04em;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 rgba(198, 167, 94, 0); }
-  50% { box-shadow: 0 0 20px rgba(198, 167, 94, 0.08); }
-}
-
-/* ---- Now Playing Banner (BG 18.66 auto-play) ---- */
-
-.now-playing-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
-  padding: 0.7rem 1.2rem;
-  margin-bottom: 1.5rem;
-  background: rgba(198, 167, 94, 0.04);
-  border: 1px solid rgba(198, 167, 94, 0.15);
-  border-radius: 14px;
-  position: relative;
-  z-index: 2;
-  animation: fadeIn 0.6s ease-out;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.now-playing-banner.playing {
-  border-color: rgba(198, 167, 94, 0.3);
-  background: rgba(198, 167, 94, 0.06);
-  box-shadow: 0 0 24px rgba(198, 167, 94, 0.06);
-}
-
-.now-playing-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  border: none;
-  background: none;
   cursor: pointer;
-  color: #E8E0D4;
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 500;
-  padding: 0.3rem 0;
-  transition: color 0.2s;
-}
-
-.now-playing-btn:hover {
-  color: #F0E6D0;
-}
-
-.now-playing-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(198, 167, 94, 0.12);
-  color: #C6A75E;
   transition: all 0.2s;
+  opacity: 0.7;
 }
 
-.now-playing-btn:hover .now-playing-icon {
-  background: rgba(198, 167, 94, 0.2);
-}
-
-.now-playing-text {
-  letter-spacing: 0.02em;
-}
-
-.now-playing-wave {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-  height: 16px;
-  margin-left: 0.2rem;
-}
-
-.now-playing-wave span {
-  display: block;
-  width: 2.5px;
-  height: 100%;
-  background: #C6A75E;
-  border-radius: 2px;
-  animation: audioWave 0.8s ease-in-out infinite;
-}
-
-.now-playing-wave span:nth-child(1) { animation-delay: 0s; }
-.now-playing-wave span:nth-child(2) { animation-delay: 0.15s; }
-.now-playing-wave span:nth-child(3) { animation-delay: 0.3s; }
-.now-playing-wave span:nth-child(4) { animation-delay: 0.45s; }
-
-.now-playing-study {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #C6A75E;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 0.35rem 0.8rem;
-  border: 1px solid rgba(198, 167, 94, 0.2);
-  border-radius: 8px;
-  white-space: nowrap;
-  transition: all 0.2s;
-}
-
-.now-playing-study:hover {
-  background: rgba(198, 167, 94, 0.08);
-  border-color: rgba(198, 167, 94, 0.4);
-  color: #D4B96E;
+.audio-toggle:hover {
+  opacity: 1;
+  background: rgba(20, 18, 15, 0.85);
+  border-color: rgba(198, 167, 94, 0.5);
+  transform: scale(1.08);
 }
 
 /* ---- Verse Index Page ---- */
