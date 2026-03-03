@@ -35,10 +35,9 @@ export default function VerseIndex() {
   const [textFilter, setTextFilter] = useState<FilterMode>('all')
   const [chapterFilter, setChapterFilter] = useState<string>('')
 
-  // Audio — plays on first user interaction (browser blocks autoplay with sound)
+  // Audio — same pattern as AudioButtons on verse pages
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
-  const startedRef = useRef(false)
 
   useEffect(() => {
     async function fetchVerses() {
@@ -52,25 +51,41 @@ export default function VerseIndex() {
     fetchVerses()
   }, [])
 
-  // Start music on first interaction anywhere on the page
+  // Autoplay 18.66 — mirrors AudioButtons approach (fetch HEAD then play)
   useEffect(() => {
-    function startAudio() {
-      if (startedRef.current) return
-      const audio = audioRef.current
-      if (!audio) return
-      startedRef.current = true
-      audio.volume = 1
-      audio.play()
-        .then(() => setIsPlaying(true))
-        .catch(() => { startedRef.current = false })
-    }
-    document.addEventListener('click', startAudio, { once: true })
-    document.addEventListener('scroll', startAudio, { once: true })
-    document.addEventListener('touchstart', startAudio, { once: true })
+    let cancelled = false
+    const vibeSrc = '/audio/18_66.mp3'
+
+    fetch(vibeSrc, { method: 'HEAD' })
+      .then(res => {
+        if (cancelled || !res.ok) return
+        setTimeout(() => {
+          const audio = audioRef.current
+          if (!audio || cancelled) return
+          audio.src = vibeSrc
+          audio.volume = 1
+          audio.load()
+          audio.play()
+            .then(() => { if (!cancelled) setIsPlaying(true) })
+            .catch(() => {
+              // Autoplay blocked — start on first interaction
+              function startOnClick() {
+                const a = audioRef.current
+                if (!a) return
+                a.play()
+                  .then(() => setIsPlaying(true))
+                  .catch(() => {})
+              }
+              document.addEventListener('click', startOnClick, { once: true })
+              document.addEventListener('touchstart', startOnClick, { once: true })
+            })
+        }, 50)
+      })
+      .catch(() => {})
+
     return () => {
-      document.removeEventListener('click', startAudio)
-      document.removeEventListener('scroll', startAudio)
-      document.removeEventListener('touchstart', startAudio)
+      cancelled = true
+      audioRef.current?.pause()
     }
   }, [])
 
