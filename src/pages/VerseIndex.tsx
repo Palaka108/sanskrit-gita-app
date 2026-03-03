@@ -35,12 +35,10 @@ export default function VerseIndex() {
   const [textFilter, setTextFilter] = useState<FilterMode>('all')
   const [chapterFilter, setChapterFilter] = useState<string>('')
 
-  // Audio state
+  // Audio — plays on first user interaction (browser blocks autoplay with sound)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const audioCtxRef = useRef<AudioContext | null>(null)
-  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null)
-  const gainRef = useRef<GainNode | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const startedRef = useRef(false)
 
   useEffect(() => {
     async function fetchVerses() {
@@ -54,67 +52,35 @@ export default function VerseIndex() {
     fetchVerses()
   }, [])
 
-  // Set up Web Audio API and autoplay
+  // Start music on first interaction anywhere on the page
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    function initAndPlay() {
-      if (!audioCtxRef.current) {
-        const ctx = new AudioContext()
-        audioCtxRef.current = ctx
-        const source = ctx.createMediaElementSource(audio as HTMLMediaElement)
-        sourceRef.current = source
-        const gain = ctx.createGain()
-        gainRef.current = gain
-        gain.gain.value = 0
-        source.connect(gain)
-        gain.connect(ctx.destination)
-      }
-
-      const ctx = audioCtxRef.current!
-      const gain = gainRef.current!
-
-      if (ctx.state === 'suspended') ctx.resume()
-
-      audio!.play()
-        .then(() => {
-          setIsPlaying(true)
-          // Fade volume in over 2 seconds
-          gain.gain.setValueAtTime(0, ctx.currentTime)
-          gain.gain.linearRampToValueAtTime(1, ctx.currentTime + 2)
-        })
-        .catch(() => {
-          // Autoplay blocked — play on first interaction
-          function playOnClick() {
-            if (ctx.state === 'suspended') ctx.resume()
-            audio!.play()
-              .then(() => {
-                setIsPlaying(true)
-                gain.gain.setValueAtTime(0, ctx.currentTime)
-                gain.gain.linearRampToValueAtTime(1, ctx.currentTime + 2)
-              })
-              .catch(() => {})
-          }
-          document.addEventListener('click', playOnClick, { once: true })
-        })
+    function startAudio() {
+      if (startedRef.current) return
+      const audio = audioRef.current
+      if (!audio) return
+      startedRef.current = true
+      audio.volume = 1
+      audio.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => { startedRef.current = false })
     }
-
-    initAndPlay()
+    document.addEventListener('click', startAudio, { once: true })
+    document.addEventListener('scroll', startAudio, { once: true })
+    document.addEventListener('touchstart', startAudio, { once: true })
+    return () => {
+      document.removeEventListener('click', startAudio)
+      document.removeEventListener('scroll', startAudio)
+      document.removeEventListener('touchstart', startAudio)
+    }
   }, [])
 
   function togglePlay() {
     const audio = audioRef.current
-    const ctx = audioCtxRef.current
-    const gain = gainRef.current
-    if (!audio || !ctx || !gain) return
-
+    if (!audio) return
     if (isPlaying) {
       audio.pause()
       setIsPlaying(false)
     } else {
-      if (ctx.state === 'suspended') ctx.resume()
-      gain.gain.setValueAtTime(1, ctx.currentTime)
       audio.play()
         .then(() => setIsPlaying(true))
         .catch(() => {})
