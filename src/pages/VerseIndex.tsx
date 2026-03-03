@@ -35,10 +35,12 @@ export default function VerseIndex() {
   const [textFilter, setTextFilter] = useState<FilterMode>('all')
   const [chapterFilter, setChapterFilter] = useState<string>('')
 
-  // Auto-play BG 18.66
+  // Audio state
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioCtxRef = useRef<AudioContext | null>(null)
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null)
+  const gainRef = useRef<GainNode | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [autoplayBlocked, setAutoplayBlocked] = useState(false)
 
   useEffect(() => {
     async function fetchVerses() {
@@ -52,58 +54,69 @@ export default function VerseIndex() {
     fetchVerses()
   }, [])
 
-  // Auto-play 18.66 on mount — start muted then fade volume in
+  // Set up Web Audio API and autoplay
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-    audio.muted = true
-    audio.volume = 0
-    audio.play()
-      .then(() => {
-        setIsPlaying(true)
-        setAutoplayBlocked(false)
-        // Unmute and fade volume in over 2 seconds
-        audio.muted = false
-        let vol = 0
-        const fade = setInterval(() => {
-          vol = Math.min(vol + 0.05, 1)
-          audio.volume = vol
-          if (vol >= 1) clearInterval(fade)
-        }, 100)
-      })
-      .catch(() => setAutoplayBlocked(true))
-  }, [])
 
-  // If autoplay blocked, play on first user click anywhere on the page
-  useEffect(() => {
-    if (!autoplayBlocked) return
-    function playOnClick() {
-      const audio = audioRef.current
-      if (!audio) return
+    function initAndPlay() {
+      if (!audioCtxRef.current) {
+        const ctx = new AudioContext()
+        audioCtxRef.current = ctx
+        const source = ctx.createMediaElementSource(audio)
+        sourceRef.current = source
+        const gain = ctx.createGain()
+        gainRef.current = gain
+        gain.gain.value = 0
+        source.connect(gain)
+        gain.connect(ctx.destination)
+      }
+
+      const ctx = audioCtxRef.current!
+      const gain = gainRef.current!
+
+      if (ctx.state === 'suspended') ctx.resume()
+
       audio.play()
         .then(() => {
           setIsPlaying(true)
-          setAutoplayBlocked(false)
+          // Fade volume in over 2 seconds
+          gain.gain.setValueAtTime(0, ctx.currentTime)
+          gain.gain.linearRampToValueAtTime(1, ctx.currentTime + 2)
         })
-        .catch(() => {})
-      document.removeEventListener('click', playOnClick)
+        .catch(() => {
+          // Autoplay blocked — play on first interaction
+          function playOnClick() {
+            if (ctx.state === 'suspended') ctx.resume()
+            audio.play()
+              .then(() => {
+                setIsPlaying(true)
+                gain.gain.setValueAtTime(0, ctx.currentTime)
+                gain.gain.linearRampToValueAtTime(1, ctx.currentTime + 2)
+              })
+              .catch(() => {})
+          }
+          document.addEventListener('click', playOnClick, { once: true })
+        })
     }
-    document.addEventListener('click', playOnClick, { once: true })
-    return () => document.removeEventListener('click', playOnClick)
-  }, [autoplayBlocked])
+
+    initAndPlay()
+  }, [])
 
   function togglePlay() {
     const audio = audioRef.current
-    if (!audio) return
+    const ctx = audioCtxRef.current
+    const gain = gainRef.current
+    if (!audio || !ctx || !gain) return
+
     if (isPlaying) {
       audio.pause()
       setIsPlaying(false)
     } else {
+      if (ctx.state === 'suspended') ctx.resume()
+      gain.gain.setValueAtTime(1, ctx.currentTime)
       audio.play()
-        .then(() => {
-          setIsPlaying(true)
-          setAutoplayBlocked(false)
-        })
+        .then(() => setIsPlaying(true))
         .catch(() => {})
     }
   }
