@@ -52,15 +52,24 @@ export default function VerseIndex() {
     fetchVerses()
   }, [])
 
-  // Auto-play 18.66 on mount
+  // Auto-play 18.66 on mount — start muted then fade volume in
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-    audio.volume = 1
+    audio.muted = true
+    audio.volume = 0
     audio.play()
       .then(() => {
         setIsPlaying(true)
         setAutoplayBlocked(false)
+        // Unmute and fade volume in over 2 seconds
+        audio.muted = false
+        let vol = 0
+        const fade = setInterval(() => {
+          vol = Math.min(vol + 0.05, 1)
+          audio.volume = vol
+          if (vol >= 1) clearInterval(fade)
+        }, 100)
       })
       .catch(() => setAutoplayBlocked(true))
   }, [])
