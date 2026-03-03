@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- Deep navy background with subtle lighter center -->
+    <radialGradient id="bg" cx="50%" cy="52%" r="65%">
+      <stop offset="0%" stop-color="#152035"/>
+      <stop offset="60%" stop-color="#0D1525"/>
+      <stop offset="100%" stop-color="#0B0F1A"/>
+    </radialGradient>
+
+    <!-- Soft glow behind lotus -->
+    <radialGradient id="glow" cx="50%" cy="55%" r="32%">
+      <stop offset="0%" stop-color="#D4E8F0" stop-opacity="0.35"/>
+      <stop offset="40%" stop-color="#8CBDD4" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0B0F1A" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Inner petal gradient — luminous white/cream -->
+    <radialGradient id="petalInner" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#F5F0E8"/>
+      <stop offset="40%" stop-color="#E8DFD0"/>
+      <stop offset="100%" stop-color="#C8B898"/>
+    </radialGradient>
+
+    <!-- Outer petal gradient — soft blue-white -->
+    <radialGradient id="petalOuter" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#E8E4DD"/>
+      <stop offset="50%" stop-color="#C8C0B4"/>
+      <stop offset="100%" stop-color="#9A9488"/>
+    </radialGradient>
+
+    <!-- Back petal gradient — deeper, more shadow -->
+    <radialGradient id="petalBack" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#D0C8BC"/>
+      <stop offset="50%" stop-color="#A89C8C"/>
+      <stop offset="100%" stop-color="#786C5C"/>
+    </radialGradient>
+
+    <!-- Pink tip accent -->
+    <linearGradient id="pinkTip" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#E8A0A8"/>
+      <stop offset="100%" stop-color="#D4888C" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Stem gradient -->
+    <linearGradient id="stem" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#5A6848"/>
+      <stop offset="100%" stop-color="#3A4830"/>
+    </linearGradient>
+
+    <!-- Gold text gradient -->
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4B86A"/>
+      <stop offset="50%" stop-color="#C6A75E"/>
+      <stop offset="100%" stop-color="#B89850"/>
+    </linearGradient>
+
+    <!-- Tiny star sparkle -->
+    <radialGradient id="star" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFDE8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFFDE8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Soft glow behind lotus -->
+  <ellipse cx="512" cy="520" rx="340" ry="300" fill="url(#glow)"/>
+
+  <!-- Tiny stars/sparkles -->
+  <circle cx="320" cy="180" r="2.5" fill="url(#star)"/>
+  <circle cx="700" cy="140" r="2" fill="url(#star)"/>
+  <circle cx="180" cy="320" r="1.8" fill="url(#star)"/>
+  <circle cx="780" cy="280" r="2.2" fill="url(#star)"/>
+  <circle cx="460" cy="120" r="1.5" fill="url(#star)"/>
+  <circle cx="600" cy="200" r="1.8" fill="url(#star)"/>
+  <circle cx="250" cy="250" r="1.2" fill="url(#star)"/>
+  <circle cx="820" cy="200" r="1.5" fill="url(#star)"/>
+
+  <!-- Stem -->
+  <path d="M 512 620 Q 510 700 508 780" stroke="url(#stem)" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+  <!-- === LOTUS FLOWER === -->
+  <g transform="translate(512, 490)">
+
+    <!-- Back petals (widest, behind everything) -->
+    <!-- Far left back -->
+    <ellipse cx="-200" cy="-20" rx="95" ry="38" transform="rotate(-65)" fill="url(#petalBack)" opacity="0.7"/>
+    <!-- Far right back -->
+    <ellipse cx="200" cy="-20" rx="95" ry="38" transform="rotate(65)" fill="url(#petalBack)" opacity="0.7"/>
+
+    <!-- Mid-back petals -->
+    <!-- Left back -->
+    <path d="M -20,-10 Q -180,-200 -160,-60 Q -140,20 -20,10 Z" fill="url(#petalOuter)" opacity="0.8"/>
+    <!-- Right back -->
+    <path d="M 20,-10 Q 180,-200 160,-60 Q 140,20 20,10 Z" fill="url(#petalOuter)" opacity="0.8"/>
+
+    <!-- Mid petals (second layer) -->
+    <!-- Left mid -->
+    <path d="M -10,-15 Q -140,-220 -120,-80 Q -100,10 -10,5 Z" fill="url(#petalInner)" opacity="0.85"/>
+    <!-- Right mid -->
+    <path d="M 10,-15 Q 140,-220 120,-80 Q 100,10 10,5 Z" fill="url(#petalInner)" opacity="0.85"/>
+
+    <!-- Outer left petal -->
+    <path d="M -5,-8 Q -100,-240 -80,-100 Q -60,5 -5,0 Z" fill="url(#petalInner)" opacity="0.9">
+    </path>
+    <!-- Outer right petal -->
+    <path d="M 5,-8 Q 100,-240 80,-100 Q 60,5 5,0 Z" fill="url(#petalInner)" opacity="0.9"/>
+
+    <!-- Front center petals (most prominent) -->
+    <!-- Center-left -->
+    <path d="M -3,-10 Q -55,-260 -40,-120 Q -25,5 -3,0 Z" fill="#F0EBE0" opacity="0.95"/>
+    <!-- Center -->
+    <path d="M 0,-12 Q 0,-270 5,-130 Q 5,5 0,0 Z" fill="#F5F0E6" opacity="0.97"/>
+    <!-- Center-right -->
+    <path d="M 3,-10 Q 55,-260 40,-120 Q 25,5 3,0 Z" fill="#F0EBE0" opacity="0.95"/>
+
+    <!-- Pink tip accents on front petals -->
+    <ellipse cx="-35" cy="-230" rx="12" ry="20" transform="rotate(-15)" fill="#E0A0A8" opacity="0.3"/>
+    <ellipse cx="0" cy="-250" rx="10" ry="18" fill="#E0A0A8" opacity="0.25"/>
+    <ellipse cx="35" cy="-230" rx="12" ry="20" transform="rotate(15)" fill="#E0A0A8" opacity="0.3"/>
+
+    <!-- Center pistil/receptacle -->
+    <ellipse cx="0" cy="5" rx="25" ry="12" fill="#8C7850" opacity="0.6"/>
+
+  </g>
+
+  <!-- Small decorative dots around the glow (like distant fireflies) -->
+  <circle cx="350" cy="380" r="1.5" fill="#C6A75E" opacity="0.4"/>
+  <circle cx="680" cy="360" r="1.5" fill="#C6A75E" opacity="0.3"/>
+  <circle cx="280" cy="500" r="1" fill="#C6A75E" opacity="0.25"/>
+  <circle cx="740" cy="480" r="1.2" fill="#C6A75E" opacity="0.3"/>
+
+  <!-- App name -->
+  <text
+    x="512"
+    y="900"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="56"
+    fill="url(#goldText)"
+    opacity="0.8"
+    letter-spacing="10"
+  >GITA GIFT</text>
+</svg>

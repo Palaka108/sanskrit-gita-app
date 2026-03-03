@@ -1,7 +1,12 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import type { Verse } from '../types/verse'
+
+const NATURE_SCENES = [
+  '/videos/meditation-intro.mp4',
+  '/videos/nature-sunset.mp4',
+]
 
 type FilterMode = 'all' | 'gita' | 'noi'
 
@@ -17,6 +22,14 @@ function verseSortKey(v: Verse): number {
 }
 
 export default function VerseIndex() {
+  const [videoSrc] = useState(
+    () => NATURE_SCENES[Math.floor(Math.random() * NATURE_SCENES.length)]
+  )
+  const bgVideoRef = useRef<HTMLVideoElement>(null)
+  const handleVideoReady = useCallback(() => {
+    if (bgVideoRef.current) bgVideoRef.current.playbackRate = 0.55
+  }, [])
+
   const [verses, setVerses] = useState<Verse[]>([])
   const [loading, setLoading] = useState(true)
   const [textFilter, setTextFilter] = useState<FilterMode>('all')
@@ -103,6 +116,24 @@ export default function VerseIndex() {
 
   return (
     <main className="verse-index-page">
+      {/* Water video background */}
+      <div className="water-bg" aria-hidden="true">
+        <video
+          ref={bgVideoRef}
+          key={videoSrc}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="water-video"
+          onCanPlay={handleVideoReady}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+        <div className="water-overlay"></div>
+        <div className="water-glow"></div>
+      </div>
+
       {/* Autoplay-blocked overlay — tap anywhere to start */}
       {autoplayBlocked && !isPlaying && (
         <div className="autoplay-overlay" onClick={togglePlay}>
@@ -152,6 +183,7 @@ export default function VerseIndex() {
         preload="auto"
       />
 
+      <div className="verse-index-content">
       <h1>Verse Library</h1>
       <p className="index-subtitle">{filtered.length} verses available</p>
 
@@ -196,8 +228,7 @@ export default function VerseIndex() {
                     <Link key={v.id} to={`/verse/${v.chapter}/${v.verse}`} className="verse-card-link">
                       <div className="verse-index-card">
                         <span className="card-ref">{verseLabel(v)}</span>
-                        {v.grammar_focus && <span className="card-grammar">{v.grammar_focus}</span>}
-                        <p className="card-preview">{v.translation.slice(0, 80)}...</p>
+                        <p className="card-preview">{v.translation}</p>
                       </div>
                     </Link>
                   ))}
@@ -217,8 +248,7 @@ export default function VerseIndex() {
                     <Link key={v.id} to={`/verse/${v.chapter}/${v.verse}?source=noi`} className="verse-card-link">
                       <div className="verse-index-card">
                         <span className="card-ref">{verseLabel(v)}</span>
-                        {v.grammar_focus && <span className="card-grammar">{v.grammar_focus}</span>}
-                        <p className="card-preview">{v.translation.slice(0, 80)}...</p>
+                        <p className="card-preview">{v.translation}</p>
                       </div>
                     </Link>
                   ))}
@@ -228,6 +258,7 @@ export default function VerseIndex() {
           })()}
         </>
       )}
+      </div>
     </main>
   )
 }

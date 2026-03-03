@@ -21,12 +21,14 @@ export default function VerseNav({ hasWords, hasCommentaries }: VerseNavProps) {
 
   return (
     <nav className="verse-nav" aria-label="Verse sections">
-      <button className="verse-nav-btn verse-nav-home" onClick={() => navigate('/')} title="Home">
+      <button className="verse-nav-btn verse-nav-home" onClick={() => navigate('/')} title="All Verses">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 12l9-9 9 9" />
-          <path d="M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10" />
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
         </svg>
-        <span>Home</span>
+        <span>All Verses</span>
       </button>
 
       {hasWords && (

@@ -31,6 +31,7 @@ Sanskrit Bhagavad Gita learning app with verse display, grammar analysis, audio 
 - Randomly selected per visit, playback slowed to 0.55x
 
 ## Pending Tasks
+- [ ] Replace song for verse **3.13** — new version needed
 - [ ] Swap MP3s for verses **4.34**, **5.29**, **7.14** — user will create new Suno versions and upload later
 - [ ] (Future) Add more verses with audio as new songs are created
 
